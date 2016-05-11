@@ -1,6 +1,5 @@
 class bsl_puppet::server(
   $server_core_modules_path  = ["/etc/puppetlabs/code/infrastructure/${::environment}/modules"],
-  $hiera_config_path = '/etc/puppetlabs/code/hiera.yaml',
   $server_jvm_min_heap_size = '512M',
   $server_jvm_max_heap_size = '900M',
   $use_foreman = false,
@@ -34,13 +33,6 @@ class bsl_puppet::server(
     #auth_template                 => 'bsl_puppet/auth.conf.erb',
     #nsauth_template               => 'bsl_puppet/namespaceauth.conf.erb'
   }
-  ->
-  file { "${::puppet::server_dir}/ssh":
-    ensure => directory,
-    owner  => $::puppet::server_user,
-    group  => $::puppet::server_group,
-    mode   => '0700',
-  }
 
   exec { 'generate puppetserver cert':
     command   => "puppet cert generate ${::bsl_puppet::server_certname}",
@@ -70,11 +62,5 @@ class bsl_puppet::server(
       ssl_key        => pick($::puppet::server_foreman_ssl_key, $::puppet::server::ssl_cert_key),
     } ~>
     anchor { 'bsl_puppet::server::config_end': }
-  }
-
-  ## Hiera
-  file { $hiera_config_path:
-    ensure  => file,
-    content => template('bsl_puppet/server/hiera.yaml.erb')
   }
 }
