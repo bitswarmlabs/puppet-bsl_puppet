@@ -22,12 +22,19 @@ class bsl_puppet::server::r10k(
     }
   }
 
-  Class['::bsl_puppet::server']
+  Class['bsl_puppet::server']
   ->
   class { '::r10k':
     provider               => 'puppet_gem',
     sources                => hash($r10k_sources),
   }
+  ->
+  file { "${::r10k::cachedir}":
+    ensure => directory,
+    owner  => $::puppet::server_user,
+    group  => $::puppet::server_group,
+  }
+
 
   if !empty($sources) {
     validate_hash($sources)
@@ -37,11 +44,5 @@ class bsl_puppet::server::r10k(
     #   content => template('bsl_puppet/server/root-ssh-config.erb'),
     #   mode    => '0600',
     # }
-  }
-
-  sshkey { 'github.com':
-    key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==',
-    target => '/etc/ssh/ssh_known_hosts',
-    type   => 'ssh-rsa',
   }
 }

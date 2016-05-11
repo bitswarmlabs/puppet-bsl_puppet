@@ -13,8 +13,7 @@ define bsl_puppet::server::r10k::source(
   $key_length = '1024',
   $key_comment = "puppet-${name}-insecure",
 ) {
-  include '::puppet'
-  include 'bsl_puppet::server::r10k'
+  include '::bsl_puppet::server::r10k'
 
   $key_filename = inline_template('<%= scope.lookupvar("::puppet::server_dir") %>/ssh/id_<%= @provider %>_<%= @project.gsub(/(\/|\-)/, "_") %>_<%= @key_type %>')
   $deploy_key = "${key_filename}.pub"
@@ -34,14 +33,10 @@ define bsl_puppet::server::r10k::source(
     # https://github.com/abrader/abrader-gms
     # http://github.com/maestrodev/puppet-ssh_keygen
     if str2bool($manage_deploy_key) {
-      # ssh_keygen { $name:
-      #   comment  => $key_name,
-      #   filename => $deploy_key,
-      #   type     => $key_type,
-      #   bits     => $key_length,
-      #   options  => '-v',
-      #   require  => File['/root/.ssh'],
-      # }
+      include '::bsl_puppet::server::ssh_keys'
+
+      Class['::bsl_puppet::server::ssh_keys']
+      ->
       exec { "ssh_keygen-${name}":
         command   => "ssh-keygen -v -t ${key_type} -b ${key_length} -f '${$key_filename}' -N '' -C '${key_comment}'",
         creates   => $key_filename,

@@ -25,5 +25,8 @@ class bsl_puppet::server::r10k::deploy::post {
     mode    => '0644',
   }
 
+  anchor { 'bsl_puppet::server::r10k::deploy::post_start': }
+  ->
   bsl_puppet::server::r10k::deploy::post::env { $::puppet::server_environments: }
+  ->anchor { 'bsl_puppet::server::r10k::deploy::post_end': }
 }

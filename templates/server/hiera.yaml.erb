@@ -5,7 +5,7 @@
 
 :hierarchy:
   - "nodes/%{::trusted.certname}"
-  - "global"
+  - common
 
 :yaml:
 # datadir is empty here, so hiera uses its defaults:
@@ -13,5 +13,5 @@
 # - %CommonAppData%\PuppetLabs\code\environments\%{environment}\hieradata on Windows
 # When specifying a datadir, make sure the directory exists.
   :datadir:
-    - /etc/puppetlabs/code/infrastructure/<%= scope.lookupvar('::environment') %>%/hieradata
+    - /etc/puppetlabs/code/infrastructure/<%= scope.lookupvar('::environment') %>/hieradata
     - /etc/puppetlabs/code/environments/%{environment}/hieradata
