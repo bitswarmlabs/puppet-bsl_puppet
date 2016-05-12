@@ -1,5 +1,6 @@
 class bsl_puppet::server::r10k(
   $sources = undef,
+  $webooks_enabled = 'false',
   $webhook_user = 'puppet',
   $webhook_pass = 'changeme',
   $github_api_token = $bsl_puppet::server::r10k::params::github_api_token,
@@ -38,7 +39,12 @@ class bsl_puppet::server::r10k(
 
   if !empty($sources) {
     validate_hash($sources)
-    create_resources('bsl_puppet::server::r10k::source', $sources)
+
+    $defaults = {
+      'webhook_enabled'   => $webooks_enabled,
+    }
+
+    create_resources('bsl_puppet::server::r10k::source', $sources, $defaults)
 
     # file { '/root/.ssh/config':
     #   content => template('bsl_puppet/server/root-ssh-config.erb'),
