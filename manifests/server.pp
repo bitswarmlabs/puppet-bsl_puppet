@@ -1,4 +1,5 @@
 class bsl_puppet::server(
+  $server_common_modules_path = ["/etc/puppetlabs/code/environments/common/modules", "/etc/puppetlabs/code/modules", "/opt/puppetlabs/puppet/modules"],
   $server_core_modules_path  = ["/etc/puppetlabs/code/infrastructure/${::environment}/modules"],
   $server_jvm_min_heap_size = '512M',
   $server_jvm_max_heap_size = '900M',
@@ -17,6 +18,7 @@ class bsl_puppet::server(
     server_implementation         => 'puppetserver',
     server_directory_environments => true,
     server_dynamic_environments   => true, # since its managed by r10k
+    server_common_modules_path    => $server_common_modules_path,
     server_foreman                => false, # handling separately, see below
     server_jvm_min_heap_size      => $server_jvm_min_heap_size,
     server_jvm_max_heap_size      => $server_jvm_max_heap_size,
