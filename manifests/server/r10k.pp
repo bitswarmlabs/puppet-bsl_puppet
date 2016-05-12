@@ -46,7 +46,7 @@ class bsl_puppet::server::r10k(
     validate_hash($sources)
 
     $defaults = {
-      'webhook_enabled'   => $webooks_enabled,
+      'manage_webhook'   => $webooks_enabled,
     }
 
     create_resources('bsl_puppet::server::r10k::source', $sources, $defaults)

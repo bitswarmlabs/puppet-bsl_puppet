@@ -36,6 +36,10 @@ class bsl_puppet::server(
     #nsauth_template               => 'bsl_puppet/namespaceauth.conf.erb'
   }
 
+  file { ['/etc/puppetlabs/code/modules', '/opt/puppetlabs/puppet/modules']:
+    ensure => directory,
+  }
+
   exec { 'generate puppetserver cert':
     command   => "puppet cert generate ${::bsl_puppet::server_certname}",
     creates   => "${::puppet::server_ssl_dir}/certs/${::bsl_puppet::server_certname}.pem",

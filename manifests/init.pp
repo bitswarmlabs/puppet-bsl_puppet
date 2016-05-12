@@ -49,5 +49,4 @@ class bsl_puppet(
   $server_alt_dns_names = $bsl_puppet::params::server_alt_dns_names,
   $server_puppetdb_host = $bsl_puppet::params::server_puppetdb_host,
 ) inherits bsl_puppet::params {
-
 }

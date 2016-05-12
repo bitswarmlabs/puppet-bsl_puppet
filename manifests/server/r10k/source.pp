@@ -13,6 +13,8 @@ define bsl_puppet::server::r10k::source(
   $key_length = '1024',
   $key_comment = "puppet-${name}-insecure",
 ) {
+  $deploy_key_name = "${::clientcert}-${name}-insecure"
+
   include '::bsl_puppet::server::r10k'
 
   $key_filename = inline_template('<%= scope.lookupvar("::puppet::server_dir") %>/ssh/id_<%= @provider %>_<%= @project.gsub(/(\/|\-)/, "_") %>_<%= @key_type %>')
@@ -59,7 +61,7 @@ define bsl_puppet::server::r10k::source(
         ensure    => present,
       }
       ->
-      git_deploy_key { $key_comment:
+      git_deploy_key { $deploy_key_name:
         ensure       => present,
         path         => $deploy_key,
         token        => $bsl_puppet::server::r10k::github_api_token,
