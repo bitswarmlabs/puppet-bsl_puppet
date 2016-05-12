@@ -1,9 +1,11 @@
 class bsl_puppet::server::puppetdb(
   $puppetdb_host = $::bsl_puppet::server_puppetdb_host,
   $puppetdb_soft_write_failure = true,
-  $postgresql_backend = 'localhost',
-  $postgresql_user = '',
-  $postgresql_pass = '',
+  $database_host = 'localhost',
+  $database_port = '5432',
+  $database_name = 'puppetdb',
+  $database_username = 'puppetdb',
+  $database_password = 'puppetdb'
 ) {
   if $puppetdb_host != undef and !defined(Host[$puppetdb_host]) {
     host { $puppetdb_host:
@@ -14,6 +16,11 @@ class bsl_puppet::server::puppetdb(
 
   class { '::puppetdb':
     # disable_ssl => true,
+    database_host       => $postgresql_backend,
+    database_port       => $database_port,
+    database_name       => $database_name,
+    database_username   => $database_username,
+    database_password   => $database_password,
   }
 
   class { '::puppetdb::master::config':

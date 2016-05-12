@@ -4,14 +4,15 @@
   - yaml
 
 :yaml:
-  :datadir: "<%= @scope.lookupvar('::puppet::server_envs_dir') %>/%{environment}/hieradata"
+  :datadir: "<%= @datadir %>"
 
 :hierarchy:
-  - "<%= @scope.lookupvar('::puppet::codedir') %>/infrastructure/${environment}/hieradata/defaults"
-  - "<%= @scope.lookupvar('::puppet::codedir') %>/infrastructure/${environment}/hieradata/nodes/%{::trusted.certname}"
-  - "<%= @scope.lookupvar('::puppet::codedir') %>/infrastructure/${environment}/hieradata/bootstrap/%{::app_project}"
-  - "%{::aws_tag_profile}"
-  - "%{::aws_tag_role}"
-  - "%{::aws_tag_environment}"
-  - "nodes/%{::trusted.certname}"
-  - "<%= @scope.lookupvar('::puppet::codedir') %>/infrastructure/${environment}/hieradata/common"
+  - "infrastructure/%{environment}/hieradata/defaults"
+  - "infrastructure/%{environment}/hieradata/nodes/%{::trusted.certname}"
+  - "infrastructure/%{environment}/hieradata/bootstrap/%{::app_project}"
+  - "environments/%{environment}/hieradata/%{::aws_tag_profile}"
+  - "environments/%{environment}/hieradata/%{::aws_tag_role}"
+  - "environments/%{environment}/hieradata/%{::aws_tag_environment}"
+  - "environments/%{environment}/hieradata/nodes/%{::trusted.certname}"
+  - "infrastructure/%{environment}/hieradata/nodes/%{::trusted.certname}"
+  - "infrastructure/%{environment}/hieradata/common"

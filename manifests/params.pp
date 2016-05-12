@@ -1,4 +1,6 @@
 class bsl_puppet::params {
+  $puppetmaster = hiera('puppetmaster', 'puppet')
+
   $environment = $::aws_tag_environment ? {
     /.+/ => $::aws_tag_environment,
     default => 'production',

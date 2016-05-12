@@ -1,5 +1,6 @@
 class bsl_puppet::server::hiera(
   $hiera_config_path = '/etc/puppetlabs/code/hiera.yaml',
+  $datadir = '/etc/puppetlabs/code/infrastructure/%{::environment}/hieradata',
 ) {
   ## Hiera
   file { $hiera_config_path:
