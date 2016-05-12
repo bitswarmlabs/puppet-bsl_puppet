@@ -3,14 +3,15 @@
 :backends:
   - yaml
 
-:hierarchy:
-  - "nodes/%{::trusted.certname}"
-  - common
-
 :yaml:
-# datadir is empty here, so hiera uses its defaults:
-# - /etc/puppetlabs/code/environments/%{environment}/hieradata on *nix
-# - %CommonAppData%\PuppetLabs\code\environments\%{environment}\hieradata on Windows
-# When specifying a datadir, make sure the directory exists.
-  :datadir: "/etc/puppetlabs/code/infrastructure/%{environment}/hieradata"
+  :datadir: "<%= @scope.lookupvar('::puppet::server_envs_dir') %>/%{environment}/hieradata"
 
+:hierarchy:
+  - "<%= @scope.lookupvar('::puppet::codedir') %>/infrastructure/${environment}/hieradata/defaults"
+  - "<%= @scope.lookupvar('::puppet::codedir') %>/infrastructure/${environment}/hieradata/nodes/%{::trusted.certname}"
+  - "<%= @scope.lookupvar('::puppet::codedir') %>/infrastructure/${environment}/hieradata/bootstrap/%{::app_project}"
+  - "%{::aws_tag_profile}"
+  - "%{::aws_tag_role}"
+  - "%{::aws_tag_environment}"
+  - "nodes/%{::trusted.certname}"
+  - "<%= @scope.lookupvar('::puppet::codedir') %>/infrastructure/${environment}/hieradata/common"
