@@ -29,12 +29,12 @@ class bsl_puppet::server::r10k(
     provider               => 'puppet_gem',
     sources                => hash($r10k_sources),
   }
-  ->
-  file { "${::r10k::cachedir}":
-    ensure => directory,
-    owner  => $::puppet::server_user,
-    group  => $::puppet::server_group,
-  }
+  # ->
+  # file { "${::r10k::cachedir}":
+  #   ensure => directory,
+  #   owner  => $::puppet::server_user,
+  #   group  => $::puppet::server_group,
+  # }
 
   if ! defined(Class['r10k::install::puppet_gem']) {
     file { '/usr/bin/r10k':
