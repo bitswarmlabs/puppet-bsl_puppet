@@ -1,5 +1,7 @@
 class bsl_puppet::server::r10k::deploy {
-  Class['bsl_puppet::server::r10k']
+  Class['bsl_puppet::server::ssh_keys']
+  ->
+  Class['::r10k::install']
   ~>
   exec { 'r10k deploy':
     command   => 'r10k deploy environment --verbose',
@@ -11,5 +13,9 @@ class bsl_puppet::server::r10k::deploy {
   ~>
   class { 'bsl_puppet::server::r10k::deploy::post':
 
+  }
+
+  Bsl_puppet::Server::R10k::Source <| |> {
+    before => Exec['r10k deploy']
   }
 }

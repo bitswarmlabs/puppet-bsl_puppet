@@ -8,11 +8,6 @@ class bsl_puppet::server(
 ) {
   include '::bsl_puppet'
 
-  host { $::bsl_puppet::server_certname:
-    ip           => '127.0.0.1',
-    host_aliases => [$::hostname, $::fqdn],
-  }
-
   class { '::puppet':
     server                        => true,
     server_implementation         => 'puppetserver',
