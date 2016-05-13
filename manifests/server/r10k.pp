@@ -1,10 +1,10 @@
 class bsl_puppet::server::r10k(
   $sources = undef,
-  $webooks_enabled = 'false',
+  $webhooks_enabled = 'false',
   $webhook_user = 'puppet',
   $webhook_pass = 'changeme',
   $github_api_token = $bsl_puppet::server::r10k::params::github_api_token,
-  $use_mcollective = false,
+  $use_mcollective = 'false',
 ) inherits bsl_puppet::server::r10k::params {
   $r10k_sources = $sources.map|$key, $value| {
       if str2bool($value[manage_deploy_key]) {
@@ -46,7 +46,7 @@ class bsl_puppet::server::r10k(
     validate_hash($sources)
 
     $defaults = {
-      'manage_webhook'   => $webooks_enabled,
+      'manage_webhook'   => $webhooks_enabled,
     }
 
     create_resources('bsl_puppet::server::r10k::source', $sources, $defaults)
