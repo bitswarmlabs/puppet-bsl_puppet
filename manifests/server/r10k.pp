@@ -36,10 +36,13 @@ class bsl_puppet::server::r10k(
     group  => $::puppet::server_group,
   }
 
-  file { '/usr/bin/r10k':
-    ensure => link,
-    target => '/opt/puppetlabs/puppet/bin/r10k',
-    force  => true,
+  if ! defined(Class['r10k::install::puppet_gem']) {
+    file { '/usr/bin/r10k':
+      ensure => link,
+      target => '/opt/puppetlabs/puppet/bin/r10k',
+      force  => true,
+      require => Class['r10k'],
+    }
   }
 
   if !empty($sources) {
