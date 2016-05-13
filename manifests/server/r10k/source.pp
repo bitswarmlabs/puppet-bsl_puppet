@@ -13,7 +13,7 @@ define bsl_puppet::server::r10k::source(
   $key_length = '1024',
   $key_comment = "puppet-${name}-insecure",
 ) {
-  $deploy_key_name = "${::clientcert}-${name}-insecure"
+  $deploy_key_name = "$key_comment@${::clientcert}"
 
   include '::bsl_puppet::server::r10k'
 
