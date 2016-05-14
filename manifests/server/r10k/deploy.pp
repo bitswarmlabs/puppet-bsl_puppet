@@ -4,7 +4,7 @@ class bsl_puppet::server::r10k::deploy {
   Class['::r10k::install']
   ~>
   exec { 'r10k deploy':
-    command   => 'r10k deploy environment --verbose',
+    command   => 'r10k deploy environment -v -p',
     path      => '/opt/puppetlabs/puppet/bin:/usr/local/bin:/usr/bin:/bin',
     # environment => [ "HOME='/opt/puppetlabs/puppet'" ],
     # user      => $::puppet::server_user,
