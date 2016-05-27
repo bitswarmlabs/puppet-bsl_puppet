@@ -28,7 +28,7 @@ class bsl_puppet::server::params {
     # 'environments/%{environment}/hieradata/%{::aws_tag_profile}',
     # 'environments/%{environment}/hieradata/%{::aws_tag_role}',
     # 'environments/%{environment}/hieradata/%{::aws_tag_environment}',
-    'infrastructure/%{environment}/hieradata/bootstrap/%{::app_project}',
+    'infrastructure/%{environment}/hieradata/bootstrap/%{::app_bootsrap_project}',
     'infrastructure/%{environment}/hieradata/defaults',
   ]
 
