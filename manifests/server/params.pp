@@ -19,18 +19,17 @@ class bsl_puppet::server::params {
   $use_foreman = false
   $external_nodes = false
 
-  $hiera_datadir = '/etc/puppetlabs/code/infrastructure/%{::environment}/hieradata'
+  $hiera_datadir = '/etc/puppetlabs/code'
   $hiera_backends = [ 'yaml' ]
   $hiera_hierarchy = [
-    'infrastructure/%{environment}/hieradata/defaults',
-    'infrastructure/%{environment}/hieradata/nodes/%{::trusted.certname}',
-    'infrastructure/%{environment}/hieradata/bootstrap/%{::app_project}',
-    'environments/%{environment}/hieradata/%{::aws_tag_profile}',
-    'environments/%{environment}/hieradata/%{::aws_tag_role}',
-    'environments/%{environment}/hieradata/%{::aws_tag_environment}',
-    'environments/%{environment}/hieradata/nodes/%{::trusted.certname}',
-    'infrastructure/%{environment}/hieradata/nodes/%{::trusted.certname}',
     'infrastructure/%{environment}/hieradata/common',
+    'infrastructure/%{environment}/hieradata/nodes/%{::trusted.certname}',
+    'environments/%{environment}/hieradata/nodes/%{::trusted.certname}',
+    # 'environments/%{environment}/hieradata/%{::aws_tag_profile}',
+    # 'environments/%{environment}/hieradata/%{::aws_tag_role}',
+    # 'environments/%{environment}/hieradata/%{::aws_tag_environment}',
+    'infrastructure/%{environment}/hieradata/bootstrap/%{::app_project}',
+    'infrastructure/%{environment}/hieradata/defaults',
   ]
 
   $hiera_config_path = '/etc/puppetlabs/code/hiera.yaml'
