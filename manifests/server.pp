@@ -1,11 +1,12 @@
 class bsl_puppet::server(
-  $server_common_modules_path = ["/etc/puppetlabs/code/environments/common/modules", "/etc/puppetlabs/code/modules", "/opt/puppetlabs/puppet/modules"],
-  $server_core_modules_path  = ["/etc/puppetlabs/code/infrastructure/${::environment}/modules"],
-  $server_jvm_min_heap_size = '512M',
-  $server_jvm_max_heap_size = '900M',
-  $use_foreman = false,
-  $external_nodes = false,
-) {
+  $server_common_modules_path = $bsl_puppet::server::params::server_common_modules_path,
+  $server_core_modules_path  = $bsl_puppet::server::params::server_core_modules_path,
+  $server_jvm_min_heap_size = $bsl_puppet::server::params::server_jvm_min_heap_size,
+  $server_jvm_max_heap_size = $bsl_puppet::server::params::server_jvm_max_heap_size,
+  $use_foreman = $bsl_puppet::server::params::use_foreman,
+  $external_nodes = $bsl_puppet::server::params::external_nodes,
+  $confdir = $bsl_puppet::server::params::confdir,
+) inherits bsl_puppet::server::params {
   include '::bsl_puppet'
 
   class { '::puppet':
