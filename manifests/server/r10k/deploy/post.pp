@@ -29,6 +29,7 @@ class bsl_puppet::server::r10k::deploy::post {
   ->
   bsl_puppet::server::r10k::deploy::post::env { $::puppet::server_environments: }
   ->
+  # A workaround for some modules not have proper permissions on .rb files
   exec { 'r10k post deploy ruby perms':
     command   => "find ${::puppet::codedir} -type f -name '*.rb' ! -path '**/.git/**' -exec chmod -c ugo+r {} \\;",
     path      => '/usr/bin:/bin',
