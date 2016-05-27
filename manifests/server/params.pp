@@ -11,7 +11,9 @@ class bsl_puppet::server::params {
 
   $server_core_modules_path  = [
       "/etc/puppetlabs/code/infrastructure/${::environment}/modules",
-      "/etc/puppetlabs/code/infrastructure/${::environment}/dist"
+      "/etc/puppetlabs/code/infrastructure/${::environment}/dist",
+      "/etc/puppetlabs/code/environments/core/modules",
+      "/etc/puppetlabs/code/environments/core/dist",
   ]
 
   $server_jvm_min_heap_size = '512M'
@@ -24,12 +26,16 @@ class bsl_puppet::server::params {
   $hiera_hierarchy = [
     'infrastructure/%{environment}/hieradata/common',
     'infrastructure/%{environment}/hieradata/nodes/%{::trusted.certname}',
-    'environments/%{environment}/hieradata/nodes/%{::trusted.certname}',
-    # 'environments/%{environment}/hieradata/%{::aws_tag_profile}',
-    # 'environments/%{environment}/hieradata/%{::aws_tag_role}',
-    # 'environments/%{environment}/hieradata/%{::aws_tag_environment}',
-    'infrastructure/%{environment}/hieradata/bootstrap/%{::app_project}',
-    'infrastructure/%{environment}/hieradata/defaults',
+    'environments/core/hieradata/common',
+    'environments/core/hieradata/nodes/%{::trusted.certname}',
+    'environments/%{::server.environment}/hieradata/nodes/%{::trusted.certname}',
+    'environments/%{::server.environment}/hieradata/%{::ec2_tag_profile}',
+    'environments/%{::server.environment}/hieradata/%{::ec2_tag_role}',
+    'environments/%{::server.environment}/hieradata/%{::ec2_tag_environment}',
+    'infrastructure/%{::server.environment}/hieradata/bootstrap/%{::app_project}',
+    'infrastructure/%{::server.environment}/hieradata/defaults',
+    'environments/core/hieradata/bootstrap/%{::app_project}',
+    'environments/core/hieradata/defaults',
   ]
 
   $hiera_config_path = '/etc/puppetlabs/code/hiera.yaml'
@@ -37,4 +43,8 @@ class bsl_puppet::server::params {
   $hiera_merge_behavior = 'deep'
 
   $confdir = '/etc/puppetlabs/puppet'
+
+  $puppet_home = '/opt/puppetlabs/server/data/puppetserver'
+
+  $external_fqdn = hiera('external_fqdn', $::fqdn)
 }

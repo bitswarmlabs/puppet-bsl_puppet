@@ -5,6 +5,8 @@ class bsl_puppet::server::hiera(
   $logger = $bsl_puppet::server::params::hiera_logger,
   $merge_behavior = $bsl_puppet::server::params::hiera_merge_behavior,
 ) inherits bsl_puppet::server::params {
+  # notify { '## hello from bsl_puppet::server::hiera': }
+  
   $hiera_config_path = $bsl_puppet::server::hiera_config_path
   $confdir = $bsl_puppet::server::confdir
 

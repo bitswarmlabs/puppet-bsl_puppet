@@ -1,4 +1,6 @@
 class bsl_puppet::server::r10k::deploy {
+  anchor { 'bsl_puppet::server::r10k::deploy::begin': }
+  ->
   Class['bsl_puppet::server::ssh_keys']
   ->
   Class['::r10k::install']
@@ -14,6 +16,7 @@ class bsl_puppet::server::r10k::deploy {
   class { 'bsl_puppet::server::r10k::deploy::post':
 
   }
+  ~>anchor { 'bsl_puppet::server::r10k::deploy::end': }
 
   Bsl_puppet::Server::R10k::Source <| |> {
     before => Exec['r10k deploy']

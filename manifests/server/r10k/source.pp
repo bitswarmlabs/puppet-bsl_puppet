@@ -1,19 +1,18 @@
 define bsl_puppet::server::r10k::source(
   $provider = 'github',
   $provider_server_url = 'https://api.github.com',
-  $disable_ssl_verify = false,
+  $disable_ssl_verify = true,
   $remote,
   $basedir = $::environmentpath,
   $prefix = true,
   $manage_deploy_key = 'true',
   $manage_webhook = 'false',
-  $webhook_url,
   $project,
   $key_type = 'rsa',
   $key_length = '1024',
   $key_comment = "puppet-${name}-insecure",
 ) {
-  $deploy_key_name = "$key_comment@${::fqdn}"
+  $deploy_key_name = "$key_comment@${::bsl_puppet::server::external_fqdn}"
 
   include '::bsl_puppet::server::r10k'
 
@@ -21,6 +20,8 @@ define bsl_puppet::server::r10k::source(
   $deploy_key = "${key_filename}.pub"
 
   $pseudo_hostname = inline_template('<%= @project.gsub(/(\/|\_)/, "-") %>.<%= @provider %>')
+
+  notify { "## bsl_puppet::server::r10k::source[$title] - manage_webhook? ${manage_webhook}": }
 
   if ! defined(File[$basedir]) {
     file { $basedir:
@@ -30,7 +31,7 @@ define bsl_puppet::server::r10k::source(
     }
   }
 
-  if !empty($bsl_puppet::server::r10k::github_api_token) {
+  if $bsl_puppet::server::r10k::github_api_token {
     # https://github.com/settings/tokens/new and
     # https://github.com/abrader/abrader-gms
     # http://github.com/maestrodev/puppet-ssh_keygen
@@ -79,7 +80,7 @@ define bsl_puppet::server::r10k::source(
       git_webhook { $name :
         ensure             => present,
         token              => $bsl_puppet::server::r10k::github_api_token,
-        webhook_url        => $webhook_url,
+        webhook_url        => "${bsl_puppet::server::r10k::webhook::webhook_base_url}/payload",
         project_name       => $project,
         server_url         => $provider_server_url,
         disable_ssl_verify => $disable_ssl_verify,

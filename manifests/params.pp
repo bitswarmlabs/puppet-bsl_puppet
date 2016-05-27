@@ -8,7 +8,9 @@ class bsl_puppet::params {
 
   $server_certname = 'puppet'
 
-  $server_alt_dns_names = []
+  $server_alt_dns_names = [ $::fqdn ]
 
   $server_puppetdb_host = 'puppet'
+
+  $external_fqdn = $::fqdn
 }

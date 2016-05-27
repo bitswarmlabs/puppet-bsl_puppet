@@ -1,4 +1,5 @@
 class bsl_puppet::server(
+  $external_fqdn = $bsl_puppet::server::params::external_fqdn,
   $server_common_modules_path = $bsl_puppet::server::params::server_common_modules_path,
   $server_core_modules_path  = $bsl_puppet::server::params::server_core_modules_path,
   $server_jvm_min_heap_size = $bsl_puppet::server::params::server_jvm_min_heap_size,
@@ -7,6 +8,7 @@ class bsl_puppet::server(
   $external_nodes = $bsl_puppet::server::params::external_nodes,
   $confdir = $bsl_puppet::server::params::confdir,
   $hiera_config_path = $bsl_puppet::server::params::hiera_config_path,
+  $puppet_home = $bsl_puppet::server::params::puppet_home,
 ) inherits bsl_puppet::server::params {
   include '::bsl_puppet'
 
@@ -38,7 +40,7 @@ class bsl_puppet::server(
     command   => "puppet cert generate ${::bsl_puppet::server_certname}",
     creates   => "${::puppet::server_ssl_dir}/certs/${::bsl_puppet::server_certname}.pem",
     path      => '/opt/puppetmaster/bin:/usr/bin:/bin',
-    notify    => [ Service['puppetserver'], Service['puppet'] ],
+    notify    => [ Service['puppetserver'], Service['puppetdb'], Service['puppet'] ],
     logoutput => true,
   }
 
