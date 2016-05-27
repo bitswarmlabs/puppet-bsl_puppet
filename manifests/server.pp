@@ -6,6 +6,7 @@ class bsl_puppet::server(
   $use_foreman = $bsl_puppet::server::params::use_foreman,
   $external_nodes = $bsl_puppet::server::params::external_nodes,
   $confdir = $bsl_puppet::server::params::confdir,
+  $hiera_config_path = $bsl_puppet::server::params::hiera_config_path,
 ) inherits bsl_puppet::server::params {
   include '::bsl_puppet'
 
@@ -25,6 +26,7 @@ class bsl_puppet::server(
     manage_packages               => false,
     server_reports                => 'store,puppetdb',
     server_storeconfigs_backend   => 'puppetdb',
+    hiera_config                  => $hiera_config_path,
     main_template                 => 'bsl_puppet/puppet.conf.erb',
     agent_template                => 'bsl_puppet/agent/puppet.conf.erb',
     server_template               => 'bsl_puppet/server/puppet.conf.erb',

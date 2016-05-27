@@ -28,5 +28,12 @@ class bsl_puppet::server::r10k::deploy::post {
   anchor { 'bsl_puppet::server::r10k::deploy::post_start': }
   ->
   bsl_puppet::server::r10k::deploy::post::env { $::puppet::server_environments: }
-  ->anchor { 'bsl_puppet::server::r10k::deploy::post_end': }
+  ->
+  exec { 'r10k post deploy permissions':
+    command   => "find ${::puppet::codedir} -type f -name '*.*' ! -path '**/.git/**' -exec chmod -c 644 {} \\;",
+    path      => '/usr/bin:/bin',
+    logoutput => true,
+  }
+  ->
+  anchor { 'bsl_puppet::server::r10k::deploy::post_end': }
 }

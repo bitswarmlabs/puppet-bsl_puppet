@@ -1,6 +1,19 @@
 class bsl_puppet::server::params {
-  $server_common_modules_path = ["/etc/puppetlabs/code/environments/common/modules", "/etc/puppetlabs/code/environments/common/dist", "/etc/puppetlabs/code/modules", "/opt/puppetlabs/puppet/modules"]
-  $server_core_modules_path  = ["/etc/puppetlabs/code/infrastructure/${::environment}/modules", "/etc/puppetlabs/code/infrastructure/${::environment}/dist"]
+
+  # See bsl_puppet::server::r10k::deploy::post::env for where environment speciic module paths are set.
+
+  $server_common_modules_path = [
+      "/etc/puppetlabs/code/environments/common/modules",
+      "/etc/puppetlabs/code/environments/common/dist",
+      "/etc/puppetlabs/code/modules",
+      "/opt/puppetlabs/puppet/modules"
+  ]
+
+  $server_core_modules_path  = [
+      "/etc/puppetlabs/code/infrastructure/${::environment}/modules",
+      "/etc/puppetlabs/code/infrastructure/${::environment}/dist"
+  ]
+
   $server_jvm_min_heap_size = '512M'
   $server_jvm_max_heap_size = '900M'
   $use_foreman = false

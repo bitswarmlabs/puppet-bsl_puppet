@@ -1,11 +1,11 @@
 class bsl_puppet::server::hiera(
-  $hiera_config_path = $bsl_puppet::server::params::hiera_config_path,
   $datadir = $bsl_puppet::server::params::hiera_datadir,
   $backends = $bsl_puppet::server::params::hiera_backends,
   $hierarchy = $bsl_puppet::server::params::hiera_hierarchy,
   $logger = $bsl_puppet::server::params::hiera_logger,
   $merge_behavior = $bsl_puppet::server::params::hiera_merge_behavior,
 ) inherits bsl_puppet::server::params {
+  $hiera_config_path = $bsl_puppet::server::hiera_config_path
   $confdir = $bsl_puppet::server::confdir
 
   ## Hiera
