@@ -25,13 +25,35 @@ class bsl_puppet::server::r10k(
         }
       }
   }
-
+  
   Class['bsl_puppet::server']
   ->
   class { '::r10k':
     provider => 'puppet_gem',
     sources  => hash($r10k_sources),
   }
+
+  # r10k module bug workaround, r10k symlink not being properly created due to broken puppet version fact
+  if ! defined(File['/usr/bin/r10k']) {
+    exec { '/opt/puppetlabs/puppet/bin/gem install r10k':
+      creates => '/opt/puppetlabs/puppet/bin/r10k',
+      path => '/opt/puppetlabs/puppet/bin:/opt/puppetlabs/bin:/usr/bin:/bin'
+    }
+    ->
+    file { '/usr/bin/r10k':
+      ensure  => link,
+      target  => '/opt/puppetlabs/puppet/bin/r10k',
+      require => Package['r10k'],
+      force   => true,
+    }
+    ->
+    exec { 'r10k version':
+      command   => 'r10k version',
+      logoutput => true,
+      path      => '/usr/bin:/bin',
+    }
+  }
+
   # ->
   # file { "${::r10k::cachedir}":
   #   ensure => directory,
