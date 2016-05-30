@@ -1,7 +1,7 @@
 define bsl_puppet::server::r10k::source(
   $provider = 'github',
   $provider_server_url = 'https://api.github.com',
-  $disable_ssl_verify = false,
+  $disable_ssl_verify = true,
   $remote,
   $basedir = $::environmentpath,
   $prefix = true,
