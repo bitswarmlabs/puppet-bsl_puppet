@@ -11,7 +11,7 @@ class bsl_puppet::server::r10k::webhook(
   class { '::r10k::webhook::config':
     enable_ssl       => str2bool($enable_ssl),
     # certname         => '',
-    certpath         => '/etc/puppetlabs/puppet/ssl/ca/ca_crt.pem',
+    # certpath         => '/etc/puppetlabs/puppet/ssl/ca/ca_crt.pem',
     public_key_path  => '/etc/puppetlabs/puppet/ssl/ca/ca_pub.pem',
     private_key_path => '/etc/puppetlabs/puppet/ssl/ca/ca_key.pem',
     protected        => true,
