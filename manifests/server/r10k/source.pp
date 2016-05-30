@@ -7,13 +7,12 @@ define bsl_puppet::server::r10k::source(
   $prefix = true,
   $manage_deploy_key = 'true',
   $manage_webhook = 'false',
-  $webhook_url,
   $project,
   $key_type = 'rsa',
   $key_length = '1024',
   $key_comment = "puppet-${name}-insecure",
 ) {
-  $deploy_key_name = "$key_comment@${::fqdn}"
+  $deploy_key_name = "$key_comment@${::bsl_puppet::server::external_fqdn}"
 
   include '::bsl_puppet::server::r10k'
 
@@ -79,7 +78,7 @@ define bsl_puppet::server::r10k::source(
       git_webhook { $name :
         ensure             => present,
         token              => $bsl_puppet::server::r10k::github_api_token,
-        webhook_url        => $webhook_url,
+        webhook_url        => "${bsl_puppet::server::r10k::webhook::webhook_base_url}/payload",
         project_name       => $project,
         server_url         => $provider_server_url,
         disable_ssl_verify => $disable_ssl_verify,

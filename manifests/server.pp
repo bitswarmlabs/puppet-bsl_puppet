@@ -1,4 +1,5 @@
 class bsl_puppet::server(
+  $external_fqdn = $bsl_puppet::server::params::external_fqdn,
   $server_common_modules_path = $bsl_puppet::server::params::server_common_modules_path,
   $server_core_modules_path  = $bsl_puppet::server::params::server_core_modules_path,
   $server_jvm_min_heap_size = $bsl_puppet::server::params::server_jvm_min_heap_size,

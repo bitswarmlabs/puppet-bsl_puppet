@@ -11,4 +11,6 @@ class bsl_puppet::params {
   $server_alt_dns_names = []
 
   $server_puppetdb_host = 'puppet'
+
+  $external_fqdn = $::fqdn
 }
