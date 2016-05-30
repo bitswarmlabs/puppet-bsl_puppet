@@ -29,6 +29,8 @@ class bsl_puppet::server::r10k(
   Class['bsl_puppet::server']
   ->
   class { '::r10k::config':
+    manage_modulepath => false,
+    cachedir => "${::settings::vardir}/r10k",
     configfile => '/etc/puppetlabs/r10k/r10k.yaml',
     manage_configfile_symlink => true,
     sources  => hash($r10k_sources),
