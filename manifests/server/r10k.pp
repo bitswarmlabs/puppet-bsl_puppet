@@ -56,39 +56,11 @@ class bsl_puppet::server::r10k(
     }
   }
 
-  exec { 'r10k version':
-    command   => 'r10k version',
-    logoutput => true,
-    path      => '/usr/bin:/bin',
-    require   => File['/usr/bin/r10k']
-  }
-
-  # ->
-  # file { "${::r10k::cachedir}":
-  #   ensure => directory,
-  #   owner  => $::puppet::server_user,
-  #   group  => $::puppet::server_group,
-  # }
-
-  # if ! defined(Class['r10k::install::puppet_gem']) {
-  #   file { '/usr/bin/r10k':
-  #     ensure => link,
-  #     target => '/opt/puppetlabs/puppet/bin/r10k',
-  #     force  => true,
-  #     require => Class['r10k'],
-  #   }
-  # }
-
   if !empty($sources) {
     $defaults = {
       'manage_webhook'   => $webhooks_enabled,
     }
 
     create_resources('bsl_puppet::server::r10k::source', $sources, $defaults)
-
-    # file { '/root/.ssh/config':
-    #   content => template('bsl_puppet/server/root-ssh-config.erb'),
-    #   mode    => '0600',
-    # }
   }
 }
