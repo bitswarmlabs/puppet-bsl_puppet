@@ -33,10 +33,12 @@ class bsl_puppet::server::r10k(
     manage_modulepath => false,
     cachedir => $cache_dir,
     configfile => '/etc/puppetlabs/r10k/r10k.yaml',
-    manage_configfile_symlink => true,
+    manage_configfile_symlink => false,
     sources  => hash($r10k_sources),
     provider => 'puppet_gem',
   }
+  ~>
+  file { '/etc/r10k.yaml': ensure => absent }
 
   # r10k module bug workaround, r10k symlink not being properly created due to broken puppet version fact
   if ! defined(File['/usr/bin/r10k']) {
