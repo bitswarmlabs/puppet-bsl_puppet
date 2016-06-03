@@ -37,4 +37,6 @@ class bsl_puppet::server::params {
   $hiera_merge_behavior = 'deep'
 
   $confdir = '/etc/puppetlabs/puppet'
+
+  $puppet_home = '/opt/puppetlabs/server/data/puppetserver'
 }

@@ -8,6 +8,7 @@ class bsl_puppet::server(
   $external_nodes = $bsl_puppet::server::params::external_nodes,
   $confdir = $bsl_puppet::server::params::confdir,
   $hiera_config_path = $bsl_puppet::server::params::hiera_config_path,
+  $puppet_home = $bsl_puppet::server::params::puppet_home,
 ) inherits bsl_puppet::server::params {
   include '::bsl_puppet'
 

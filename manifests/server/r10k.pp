@@ -5,6 +5,7 @@ class bsl_puppet::server::r10k(
   $webhook_pass = 'changeme',
   $github_api_token = $bsl_puppet::server::r10k::params::github_api_token,
   $use_mcollective = 'false',
+  $cache_dir = $bsl_puppet::server::r10k::params::cache_dir,
 ) inherits bsl_puppet::server::r10k::params {
   if !empty($sources) {
     validate_hash($sources)
@@ -30,7 +31,7 @@ class bsl_puppet::server::r10k(
   ->
   class { '::r10k':
     manage_modulepath => false,
-    cachedir => "${::settings::vardir}/r10k",
+    cachedir => $cache_dir,
     configfile => '/etc/puppetlabs/r10k/r10k.yaml',
     manage_configfile_symlink => true,
     sources  => hash($r10k_sources),
