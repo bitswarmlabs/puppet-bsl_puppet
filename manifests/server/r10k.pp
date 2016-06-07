@@ -56,6 +56,13 @@ class bsl_puppet::server::r10k(
     }
   }
 
+  exec { 'r10k version':
+    command   => 'r10k version',
+    logoutput => true,
+    path      => '/usr/bin:/bin',
+    require   => File['/usr/bin/r10k']
+  }
+
   if !empty($sources) {
     $defaults = {
       'manage_webhook'   => $webhooks_enabled,
