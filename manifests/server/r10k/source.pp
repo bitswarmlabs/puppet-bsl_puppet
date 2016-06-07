@@ -22,7 +22,7 @@ define bsl_puppet::server::r10k::source(
   $pseudo_hostname = inline_template('<%= @project.gsub(/(\/|\_)/, "-") %>.<%= @provider %>')
 
   notify { "## bsl_puppet::server::r10k::source[$title] - manage_webhook? ${manage_webhook}": }
-  
+
   if ! defined(File[$basedir]) {
     file { $basedir:
       ensure => directory,
