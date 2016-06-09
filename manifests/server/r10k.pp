@@ -1,5 +1,5 @@
 class bsl_puppet::server::r10k(
-  $sources = undef,
+  $sources = {},
   $webhooks_enabled = 'false',
   $webhook_user = 'puppet',
   $webhook_pass = 'changeme',
