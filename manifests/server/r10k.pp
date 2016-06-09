@@ -28,7 +28,7 @@ class bsl_puppet::server::r10k(
       }
   }
   else {
-    $r10k_sources = [],
+    $r10k_sources = []
   }
 
   Class['bsl_puppet::server']
