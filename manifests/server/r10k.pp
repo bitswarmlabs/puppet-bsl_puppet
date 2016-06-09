@@ -9,6 +9,7 @@ class bsl_puppet::server::r10k(
 ) inherits bsl_puppet::server::r10k::params {
   if !empty($sources) {
     validate_hash($sources)
+
     $r10k_sources = $sources.map|$key, $value| {
         if str2bool($value[manage_deploy_key]) {
           [$key, {
@@ -25,6 +26,9 @@ class bsl_puppet::server::r10k(
           }]
         }
       }
+  }
+  else {
+    $r10k_sources = [],
   }
 
   Class['bsl_puppet::server']
