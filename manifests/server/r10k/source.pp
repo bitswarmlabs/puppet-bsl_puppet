@@ -31,7 +31,7 @@ define bsl_puppet::server::r10k::source(
     }
   }
 
-  if !empty($bsl_puppet::server::r10k::github_api_token) {
+  if $bsl_puppet::server::r10k::github_api_token {
     # https://github.com/settings/tokens/new and
     # https://github.com/abrader/abrader-gms
     # http://github.com/maestrodev/puppet-ssh_keygen
