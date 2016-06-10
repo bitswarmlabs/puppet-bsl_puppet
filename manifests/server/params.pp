@@ -45,4 +45,6 @@ class bsl_puppet::server::params {
   $confdir = '/etc/puppetlabs/puppet'
 
   $puppet_home = '/opt/puppetlabs/server/data/puppetserver'
+
+  $external_fqdn = hiera('external_fqdn', $::fqdn)
 }
