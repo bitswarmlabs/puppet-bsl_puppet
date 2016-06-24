@@ -40,7 +40,7 @@ class bsl_puppet::server(
     command   => "puppet cert generate ${::bsl_puppet::server_certname}",
     creates   => "${::puppet::server_ssl_dir}/certs/${::bsl_puppet::server_certname}.pem",
     path      => '/opt/puppetmaster/bin:/usr/bin:/bin',
-    notify    => [ Service['puppetserver'], Service['puppet'] ],
+    notify    => [ Service['puppetserver'], Service['puppetdb'], Service['puppet'] ],
     logoutput => true,
   }
 

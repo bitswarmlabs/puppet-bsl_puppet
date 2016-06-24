@@ -15,7 +15,6 @@ class bsl_puppet::server::puppetdb(
   }
 
   class { '::puppetdb':
-    # disable_ssl => true,
     database_host       => $postgresql_backend,
     database_port       => $database_port,
     database_name       => $database_name,
@@ -34,9 +33,8 @@ class bsl_puppet::server::puppetdb(
 
   exec { 'puppetdb-ssl-setup':
     command     => 'puppetdb ssl-setup -f',
-    refreshonly => true,
     path        => '/opt/puppetmaster/bin:/usr/bin:/bin',
-    # creates => '/etc/puppetlabs/puppetdb/ssl/ca.pem',
+    creates     => '/etc/puppetlabs/puppetdb/ssl/ca.pem',
     logoutput   => true,
   }
 
