@@ -1,11 +1,17 @@
 class bsl_puppet::server::hostname(
-  $hostname = 'puppet',
-  $domain = 'local',
+  $hostname = $::hostname,
+  $domain = $::domain,
 ) {
-  class { '::hostname':
-    hostname => $hostname,
-    domain   => $domain,
-    before   => [ Service['puppetserver'] ],
-    notify   => [ Service['puppet'], Service['puppetdb'], Service['puppetserver'] ],
+  $set_fqdn = "${hostname}.${domain}"
+
+  if $set_fqdn != $::fqdn {
+    notify { "## bsl_puppet::server::hostname changing hostname to ${set_fqdn}": }
+    class { '::hostname':
+      hostname => $hostname,
+      domain   => $domain,
+    }
+  }
+  else {
+    notify { "## bsl_puppet::server::hostname not changing hostname to ${set_fqdn} (fqdn=${::fqdn}": }
   }
 }

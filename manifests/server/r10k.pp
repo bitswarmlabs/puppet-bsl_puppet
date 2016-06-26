@@ -57,7 +57,6 @@ class bsl_puppet::server::r10k(
     file { '/usr/bin/r10k':
       ensure  => link,
       target  => '/opt/puppetlabs/puppet/bin/r10k',
-      require => Package['r10k'],
       force   => true,
     }
   }
