@@ -23,15 +23,18 @@ class bsl_puppet::server(
   }
 
   host { $certname:
-    ip => $::ipaddress,
+    ip           => $::ipaddress,
     host_aliases => unique($_dns_alt_names)
   }
-  ->
-  class { '::hostname':
-    hostname => $hostname,
-    domain   => $domain,
+
+  if $fqdn != $::fqdn {
+    class { '::hostname':
+      hostname => $hostname,
+      domain   => $domain,
+      before   => Class['::puppet'],
+    }
   }
-  ->
+
   class { '::puppet':
     puppetmaster                  => $::bsl_puppet::puppetmaster,
     client_certname               => $certname,
