@@ -6,11 +6,11 @@ class bsl_puppet::params {
     default => 'production',
   }
 
-  $server_certname = 'puppet'
+  $server_certname = $::fqdn
 
-  $server_alt_dns_names = [ $::fqdn ]
+  $server_alt_dns_names = [ 'puppet' ]
 
-  $server_puppetdb_host = 'puppet'
+  $server_puppetdb_host = $::fqdn
 
   $external_fqdn = $::fqdn
 }

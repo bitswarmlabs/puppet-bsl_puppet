@@ -12,7 +12,7 @@ define bsl_puppet::server::r10k::source(
   $key_length = '1024',
   $key_comment = "puppet-${name}-insecure",
 ) {
-  $deploy_key_name = "$key_comment@${::bsl_puppet::server::external_fqdn}"
+  $deploy_key_name = "${key_comment}@${::clientcert}"
 
   include '::bsl_puppet::server::r10k'
 
@@ -31,7 +31,7 @@ define bsl_puppet::server::r10k::source(
     }
   }
 
-  if $bsl_puppet::server::r10k::github_api_token {
+  if !empty($bsl_puppet::server::r10k::github_api_token) {
     # https://github.com/settings/tokens/new and
     # https://github.com/abrader/abrader-gms
     # http://github.com/maestrodev/puppet-ssh_keygen
