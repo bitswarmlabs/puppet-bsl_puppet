@@ -1,11 +1,11 @@
 class bsl_puppet::server::hostname(
-  $hostname = 'puppet',
-  $domain = 'local',
+  $hostname = $::hostname,
+  $domain = $::domain,
 ) {
+  $fqdn = "${hostname}.${domain}"
+
   class { '::hostname':
     hostname => $hostname,
     domain   => $domain,
-    before   => [ Service['puppetserver'] ],
-    notify   => [ Service['puppet'], Service['puppetdb'], Service['puppetserver'] ],
   }
 }

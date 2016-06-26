@@ -1,18 +1,43 @@
 class bsl_puppet::server(
+  $hostname = $bsl_puppet::server::params::hostname,
+  $domain = $bsl_puppet::server::params::domain,
+  $certname = $bsl_puppet::server::params::certname,
+  $dns_alt_names = $bsl_puppet::server::params::dns_alt_names,
   $server_common_modules_path = $bsl_puppet::server::params::server_common_modules_path,
   $server_core_modules_path  = $bsl_puppet::server::params::server_core_modules_path,
   $server_jvm_min_heap_size = $bsl_puppet::server::params::server_jvm_min_heap_size,
   $server_jvm_max_heap_size = $bsl_puppet::server::params::server_jvm_max_heap_size,
   $use_foreman = $bsl_puppet::server::params::use_foreman,
-  $external_nodes = $bsl_puppet::server::params::external_nodes,
   $confdir = $bsl_puppet::server::params::confdir,
   $hiera_config_path = $bsl_puppet::server::params::hiera_config_path,
   $puppet_home = $bsl_puppet::server::params::puppet_home,
 ) inherits bsl_puppet::server::params {
   include '::bsl_puppet'
 
+  $fqdn = "${hostname}.${domain}"
+  if $fqdn != $certname {
+    $_dns_alt_names = concat($dns_alt_names, $fqdn)
+  }
+  else {
+    $_dns_alt_names = $dns_alt_names
+  }
+
+  host { $certname:
+    ip => $::ipaddress,
+    host_aliases => unique($_dns_alt_names)
+  }
+  ->
+  class { '::hostname':
+    hostname => $hostname,
+    domain   => $domain,
+  }
+  ->
   class { '::puppet':
+    puppetmaster                  => $::bsl_puppet::puppetmaster,
+    client_certname               => $certname,
+    dns_alt_names                 => unique($_dns_alt_names),
     server                        => true,
+    server_certname               => $certname,
     server_implementation         => 'puppetserver',
     server_directory_environments => true,
     server_dynamic_environments   => true, # since its managed by r10k
@@ -20,18 +45,28 @@ class bsl_puppet::server(
     server_foreman                => false, # handling separately, see below
     server_jvm_min_heap_size      => $server_jvm_min_heap_size,
     server_jvm_max_heap_size      => $server_jvm_max_heap_size,
-    environment                   => $::bsl_puppet::environment,
-    manage_packages               => false,
     server_reports                => 'store,puppetdb',
     server_storeconfigs_backend   => 'puppetdb',
     hiera_config                  => $hiera_config_path,
-    main_template                 => 'bsl_puppet/puppet.conf.erb',
-    agent_template                => 'bsl_puppet/agent/puppet.conf.erb',
-    server_template               => 'bsl_puppet/server/puppet.conf.erb',
+    environment                   => $::bsl_puppet::environment,
+    manage_packages               => false,
+    # main_template                 => 'bsl_puppet/puppet.conf.erb',
+    # agent_template                => 'bsl_puppet/agent/puppet.conf.erb',
+    # server_template               => 'bsl_puppet/server/puppet.conf.erb',
     #auth_template                 => 'bsl_puppet/auth.conf.erb',
     #nsauth_template               => 'bsl_puppet/namespaceauth.conf.erb'
   }
-  
+
+  # Class['bsl_puppet::server::hostname']~>
+  # exec { 'generate puppetserver cert':
+  #   command   => "puppet cert generate ${::bsl_puppet::server::fqdn}",
+  #   creates   => "${::puppet::server_ssl_dir}/certs/${::bsl_puppet::server::fqdn}.pem",
+  #   path      => '/opt/puppetmaster/bin:/usr/bin:/bin',
+  #   notify    => [ Service['puppetserver'], Service['puppet'] ],
+  #   subscribe => Class['bsl_puppet::server::hostname'],
+  #   logoutput => true,
+  # }
+
   if str2bool($use_foreman) {
     ## Foreman
     # Include foreman components for the puppetmaster

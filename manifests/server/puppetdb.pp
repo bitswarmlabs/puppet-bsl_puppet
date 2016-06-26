@@ -1,6 +1,6 @@
 class bsl_puppet::server::puppetdb(
   $puppetdb_host = $::bsl_puppet::server::params::puppetdb_host,
-  $validate_puppetdb_connection = 'true',
+  $validate_puppetdb_connection = 'false',
   $puppetdb_soft_write_failure = 'false',
   $database_host = 'localhost',
   $database_port = '5432',
@@ -8,13 +8,6 @@ class bsl_puppet::server::puppetdb(
   $database_username = 'puppetdb',
   $database_password = 'puppetdb'
 ) inherits bsl_puppet::server::params {
-  class { '::puppetdb':
-    database_host       => $database_host,
-    database_port       => $database_port,
-    database_name       => $database_name,
-    database_username   => $database_username,
-    database_password   => $database_password,
-  }
 
   class { '::puppetdb::master::config':
     puppetdb_server             => $puppetdb_host,
@@ -24,6 +17,14 @@ class bsl_puppet::server::puppetdb(
   }
   ~>
   Service['puppetserver']
+  ~>
+  class { '::puppetdb':
+    database_host       => $database_host,
+    database_port       => $database_port,
+    database_name       => $database_name,
+    database_username   => $database_username,
+    database_password   => $database_password,
+  }
 
   exec { 'puppetdb-ssl-setup':
     command     => 'puppetdb ssl-setup -f',
