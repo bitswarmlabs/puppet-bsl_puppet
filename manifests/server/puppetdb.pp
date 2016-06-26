@@ -1,21 +1,15 @@
 class bsl_puppet::server::puppetdb(
-  $puppetdb_host = $::bsl_puppet::server_puppetdb_host,
-  $puppetdb_soft_write_failure = true,
+  $puppetdb_host = $::bsl_puppet::server::params::puppetdb_host,
+  $validate_puppetdb_connection = 'true',
+  $puppetdb_soft_write_failure = 'false',
   $database_host = 'localhost',
   $database_port = '5432',
   $database_name = 'puppetdb',
   $database_username = 'puppetdb',
   $database_password = 'puppetdb'
-) {
-  if $puppetdb_host != undef and !defined(Host[$puppetdb_host]) {
-    host { $puppetdb_host:
-      ip     => '127.0.0.1',
-      before => [Class['::puppetdb'], Class['::puppetdb::master::config']],
-    }
-  }
-
+) inherits bsl_puppet::server::params {
   class { '::puppetdb':
-    database_host       => $postgresql_backend,
+    database_host       => $database_host,
     database_port       => $database_port,
     database_name       => $database_name,
     database_username   => $database_username,
@@ -24,9 +18,9 @@ class bsl_puppet::server::puppetdb(
 
   class { '::puppetdb::master::config':
     puppetdb_server             => $puppetdb_host,
-    puppetdb_soft_write_failure => $puppetdb_soft_write_failure,
+    puppetdb_soft_write_failure => str2bool($puppetdb_soft_write_failure),
+    strict_validation           => str2bool($validate_puppetdb_connection),
     manage_storeconfigs         => false, # this is managed by ::puppet::server::config
-    # strict_validation           => false,
   }
   ~>
   Service['puppetserver']
@@ -34,9 +28,9 @@ class bsl_puppet::server::puppetdb(
   exec { 'puppetdb-ssl-setup':
     command     => 'puppetdb ssl-setup -f',
     path        => '/opt/puppetmaster/bin:/usr/bin:/bin',
-    creates     => '/etc/puppetlabs/puppetdb/ssl/ca.pem',
     logoutput   => true,
+    refreshonly => true,
   }
 
-  Class['::puppet::config']->Exec['generate puppetserver cert']~>Exec['puppetdb-ssl-setup']~>Service['puppetdb']
+  Class['::puppet::config']~>Exec['puppetdb-ssl-setup']~>Service['puppetdb']
 }

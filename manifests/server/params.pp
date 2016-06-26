@@ -1,4 +1,5 @@
 class bsl_puppet::server::params {
+  $puppetdb_host = $::fqdn
 
   # See bsl_puppet::server::r10k::deploy::post::env for where environment speciic module paths are set.
 

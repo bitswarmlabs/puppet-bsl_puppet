@@ -1,6 +1,7 @@
 class bsl_puppet::server::r10k::webhook(
+  $callback_fqdn = $bsl_puppet::server::r10k::params::webhook_callback_fqdn,
+  $callback_port = $bsl_puppet::server::r10k::params::webhook_callback_port,
   $enable_ssl = 'false',
-  $port = 8088,
 ) {
   include 'bsl_puppet::server::r10k'
 
@@ -32,6 +33,7 @@ class bsl_puppet::server::r10k::webhook(
     false => 'http',
   }
 
-  $webhook_base_url = "${webhook_proto}://${bsl_puppet::server::r10k::webhook_user}:${bsl_puppet::server::r10k::webhook_pass}@${bsl_puppet::server::external_fqdn}:${port}/"
+  $webhook_base_url = "${webhook_proto}://${bsl_puppet::server::r10k::webhook_user}:${bsl_puppet::server::r10k::webhook_pass}@${callback_fqdn}:${callback_port}/"
 
+  notify { "## r10k webhook base_url: ${webhook_base_url}": }
 }
