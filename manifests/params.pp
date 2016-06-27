@@ -84,7 +84,7 @@ class bsl_puppet::params {
   $r10k_init_deploy_enabled = 'false'
   $r10k_cache_dir = "${puppetserver_home}/r10k"
   $r10k_config_file = '/etc/puppetlabs/r10k/r10k.yaml'
-  $r10k_webhook_callback_fqdn = $server_external_fqdn
+  $r10k_webhook_callback_fqdn = hiera('external_fqdn', $::fqdn)
   $r10k_webhook_callback_port = '8088'
   $r10k_webhook_enable_ssl = 'false'
   $r10k_webhook_user = $default_admin_acct_name
@@ -92,9 +92,11 @@ class bsl_puppet::params {
   $r10k_github_api_token = hiera('github_api_token', '')
   $r10k_use_mcollective = 'false'
 
-  $puppetboard_hostname = $server_external_fqdn
+  $puppetboard_fqdn = hiera('external_fqdn', $::fqdn)
+  $puppetboard_port = '80'
   $puppetboard_user = $default_admin_acct_name
   $puppetboard_pass = $default_admin_acct_pass
+  $puppetboard_manage_apache_via = 'declare'
 
   if defined(Class['bsl_puppet::config']) {
     $config_via = 'include'

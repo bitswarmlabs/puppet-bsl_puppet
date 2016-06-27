@@ -1,20 +1,28 @@
-class bsl_puppet::server::puppetboard(
-  $admin_user = 'admin',
-  $admin_pass = 'admin',
-  $www_hostname = 'puppet',
-)  {
-  assert_private('bsl_puppet::server::puppetboard is a private class')
+class bsl_puppet::server::puppetboard {
+  assert_private("bsl_puppet::server::puppetboard is a private class")
 
-  include '::apache'
-  include '::apache::mod::wsgi'
+  include 'bsl_puppet::config'
+
+  if $bsl_puppet::config::puppetboard_manage_apache_via == 'declare' {
+    class { '::apache':
+      default_vhost   => false,
+      purge_vhost_dir => true
+    }
+
+    class { '::apache::mod::wsgi': }
+  }
+  elsif $bsl_puppet::config::puppetboard_manage_apache_via == 'include' {
+    include '::apache'
+    include '::apache::mod::wsgi'
+  }
 
   class { '::puppetboard':
-    puppetdb_host => 'puppet',
+    puppetdb_host => $bsl_puppet::config::puppetdb_host,
   }
 
   class { '::puppetboard::apache::vhost':
-    vhost_name => $www_hostname,
-    port       => 80,
+    vhost_name =>  $bsl_puppet::config::puppetboard_fqdn,
+    port       => $bsl_puppet::config::puppetboard_port,
   }
 
   Apache::Vhost <| docroot == "$::puppetboard::apache::vhost::docroot" |> {
@@ -30,12 +38,13 @@ class bsl_puppet::server::puppetboard(
     ],
   }
 
-  httpauth { "${admin_user}":
+  httpauth {  $bsl_puppet::config::puppetboard_user:
     file      =>  "${::puppetboard::apache::vhost::basedir}/htpasswd",
-    password  => "${admin_pass}",
+    password  => $bsl_puppet::config::puppetboard_pass,
     realm     => 'puppetboard',
     mechanism => basic,
     ensure    => present,
+    notify    => Class['::apache::service'],
   }
   ->
   file { "${::puppetboard::apache::vhost::basedir}/htpasswd":

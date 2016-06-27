@@ -1,5 +1,5 @@
 class bsl_puppet::server::r10k {
-  assert_private('bsl_puppet::server::r10k is a private class')
+  assert_private("bsl_puppet::server::r10k is a private class")
 
   include 'bsl_puppet::config'
 

@@ -51,12 +51,12 @@ class bsl_puppet(
   $server_domain              = $bsl_puppet::params::server_domain,
   $server_certname            = $bsl_puppet::params::server_certname,
 
-  $manage_hostname            = $bsl_puppet::params::manage_hostname,
-  $manage_puppetdb            = $bsl_puppet::params::manage_puppetdb,
   $manage_hiera               = $bsl_puppet::params::manage_hiera,
+  $manage_puppetdb            = $bsl_puppet::params::manage_puppetdb,
+  $manage_hostname            = $bsl_puppet::params::manage_hostname,
+  $manage_puppetboard         = $bsl_puppet::params::manage_puppetboard,
   $manage_r10k                = $bsl_puppet::params::manage_r10k,
   $manage_r10k_webhooks       = $bsl_puppet::params::manage_r10k_webhooks,
-  $manage_puppetboard         = $bsl_puppet::params::manage_puppetboard,
   $manage_dependencies        = $bsl_puppet::params::manage_dependencies,
 
   $puppetdb_database_host     = $bsl_puppet::params::puppetdb_database_host,
@@ -84,33 +84,33 @@ class bsl_puppet(
 
   if $config_via == 'declare' {
     class { 'bsl_puppet::config':
-      server                     => $server,
-      server_environment         => $server_environment,
-      server_hostname            => $server_hostname,
-      server_domain              => $server_domain,
-      server_certname            => $server_certname,
+      server                        => $server,
+      server_environment            => $server_environment,
+      server_hostname               => $server_hostname,
+      server_domain                 => $server_domain,
+      server_certname               => $server_certname,
 
-      manage_hostname            => $manage_hostname,
-      manage_puppetdb            => $manage_puppetdb,
-      manage_hiera               => $manage_hiera,
-      manage_r10k                => $manage_r10k,
-      manage_r10k_webhooks       => $manage_r10k_webhooks,
-      manage_puppetboard         => $manage_puppetboard,
-      manage_dependencies        => $manage_dependencies,
+      manage_hostname               => $manage_hostname,
+      manage_puppetdb               => $manage_puppetdb,
+      manage_hiera                  => $manage_hiera,
+      manage_r10k                   => $manage_r10k,
+      manage_r10k_webhooks          => $manage_r10k_webhooks,
+      manage_puppetboard            => $manage_puppetboard,
+      manage_dependencies           => $manage_dependencies,
 
-      puppetdb_database_host     => $puppetdb_database_host,
-      puppetdb_database_user     => $puppetdb_database_user,
-      puppetdb_database_pass     => $puppetdb_database_pass,
+      puppetdb_database_host        => $puppetdb_database_host,
+      puppetdb_database_user        => $puppetdb_database_user,
+      puppetdb_database_pass        => $puppetdb_database_pass,
 
-      r10k_webhook_user          => $r10k_webhook_user,
-      r10k_webhook_pass          => $r10k_webhook_pass,
-      r10k_sources               => $r10k_sources,
-      r10k_github_api_token      => $r10k_github_api_token,
-      r10k_init_deploy_enabled   => $r10k_init_deploy_enabled,
+      r10k_webhook_user             => $r10k_webhook_user,
+      r10k_webhook_pass             => $r10k_webhook_pass,
+      r10k_sources                  => $r10k_sources,
+      r10k_github_api_token         => $r10k_github_api_token,
+      r10k_init_deploy_enabled      => $r10k_init_deploy_enabled,
 
-      puppetboard_user           => $puppetboard_user,
-      puppetboard_pass           => $puppetboard_pass,
-      puppetboard_hostname       => $puppetboard_hostname,
+      puppetboard_user              => $puppetboard_user,
+      puppetboard_pass              => $puppetboard_pass,
+      puppetboard_hostname          => $puppetboard_hostname,
     }
   }
   elsif $config_via == 'include' {
@@ -142,7 +142,7 @@ class bsl_puppet(
     }
   }
 
-  if str2bool($bsl_puppet::config::server) {
+  if str2bool($server) or str2bool($bsl_puppet::config::server) {
     include 'bsl_puppet::server'
 
     if str2bool($bsl_puppet::config::manage_hostname) {
