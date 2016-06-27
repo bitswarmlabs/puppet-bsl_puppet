@@ -11,6 +11,7 @@ class bsl_puppet::server(
   $confdir = $bsl_puppet::server::params::confdir,
   $hiera_config_path = $bsl_puppet::server::params::hiera_config_path,
   $puppet_home = $bsl_puppet::server::params::puppet_home,
+  $external_nodes = '',
 ) inherits bsl_puppet::server::params {
   include '::bsl_puppet'
 
@@ -46,6 +47,7 @@ class bsl_puppet::server(
     server_dynamic_environments   => true, # since its managed by r10k
     server_common_modules_path    => $server_common_modules_path,
     server_foreman                => false, # handling separately, see below
+    server_external_nodes         => $external_nodes,
     server_jvm_min_heap_size      => $server_jvm_min_heap_size,
     server_jvm_max_heap_size      => $server_jvm_max_heap_size,
     server_reports                => 'store,puppetdb',
