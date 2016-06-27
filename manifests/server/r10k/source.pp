@@ -11,10 +11,13 @@ define bsl_puppet::server::r10k::source(
   $key_type = 'rsa',
   $key_length = '1024',
   $key_comment = "puppet-${name}-insecure",
+  $github_api_token = $bsl_puppet::config::r10k_github_api_token,
 ) {
-  $deploy_key_name = "${key_comment}@${::clientcert}"
+  assert_private("bsl_puppet::server::r10k::source is a private class")
 
-  include '::bsl_puppet::server::r10k'
+  include 'bsl_puppet::config'
+
+  $deploy_key_name = "${key_comment}@${bsl_puppet::config::server_certname}"
 
   $key_filename = inline_template('<%= scope.lookupvar("::puppet::server_dir") %>/ssh/id_<%= @provider %>_<%= @project.gsub(/(\/|\-)/, "_") %>_<%= @key_type %>')
   $deploy_key = "${key_filename}.pub"
@@ -31,7 +34,7 @@ define bsl_puppet::server::r10k::source(
     }
   }
 
-  if !empty($bsl_puppet::server::r10k::github_api_token) {
+  if !empty($github_api_token) {
     # https://github.com/settings/tokens/new and
     # https://github.com/abrader/abrader-gms
     # http://github.com/maestrodev/puppet-ssh_keygen
@@ -65,7 +68,7 @@ define bsl_puppet::server::r10k::source(
       git_deploy_key { $deploy_key_name:
         ensure       => present,
         path         => $deploy_key,
-        token        => $bsl_puppet::server::r10k::github_api_token,
+        token        => $github_api_token,
         project_name => $project,
         server_url   => $provider_server_url,
         provider     => $provider,
@@ -79,7 +82,7 @@ define bsl_puppet::server::r10k::source(
       ->
       git_webhook { $name :
         ensure             => present,
-        token              => $bsl_puppet::server::r10k::github_api_token,
+        token              => $github_api_token,
         webhook_url        => "${bsl_puppet::server::r10k::webhook::webhook_base_url}/payload",
         project_name       => $project,
         server_url         => $provider_server_url,

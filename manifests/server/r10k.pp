@@ -1,16 +1,10 @@
-class bsl_puppet::server::r10k(
-  $sources = {},
-  $webhooks_enabled = 'false',
-  $webhook_user = 'puppet',
-  $webhook_pass = 'changeme',
-  $github_api_token = $bsl_puppet::server::r10k::params::github_api_token,
-  $use_mcollective = 'false',
-  $cache_dir = $bsl_puppet::server::r10k::params::cache_dir,
-) inherits bsl_puppet::server::r10k::params {
-  if !empty($sources) {
-    validate_hash($sources)
+class bsl_puppet::server::r10k {
+  assert_private('bsl_puppet::server::r10k is a private class')
 
-    $r10k_sources = $sources.map|$key, $value| {
+  include 'bsl_puppet::config'
+
+  if !empty($bsl_puppet::config::r10k_sources) {
+    $r10k_sources = $bsl_puppet::config::r10k_sources.map|$key, $value| {
         if str2bool($value[manage_deploy_key]) {
           [$key, {
             basedir => $value[basedir],
@@ -34,8 +28,8 @@ class bsl_puppet::server::r10k(
   if !empty($r10k_sources) {
     class { '::r10k':
       manage_modulepath         => false,
-      cachedir                  => $cache_dir,
-      configfile                => '/etc/puppetlabs/r10k/r10k.yaml',
+      cachedir                  => $bsl_puppet::config::r10k_cache_dir,
+      configfile                => $bsl_puppet::config::r10k_config_file,
       manage_configfile_symlink => false,
       sources                   => hash($r10k_sources),
       provider                  => 'puppet_gem',
@@ -68,11 +62,11 @@ class bsl_puppet::server::r10k(
     require   => File['/usr/bin/r10k']
   }
 
-  if !empty($sources) {
+  if !empty($bsl_puppet::config::r10k_sources) {
     $defaults = {
-      'manage_webhook'   => $webhooks_enabled,
+      'manage_webhook'   => $bsl_puppet::config::manage_r10k_webhooks,
     }
 
-    create_resources('bsl_puppet::server::r10k::source', $sources, $defaults)
+    create_resources('bsl_puppet::server::r10k::source', $bsl_puppet::config::r10k_sources, $defaults)
   }
 }

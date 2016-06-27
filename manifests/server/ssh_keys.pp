@@ -1,4 +1,6 @@
 class bsl_puppet::server::ssh_keys {
+  assert_private("bsl_puppet::server::ssh_keys is a private class")
+
   File[$::puppet::server_dir]
   ->
   file { "${::puppet::server_dir}/ssh":

@@ -1,4 +1,6 @@
 class bsl_puppet::server::r10k::deploy {
+  assert_private("bsl_puppet::server::r10k::deploy is a private class")
+
   anchor { 'bsl_puppet::server::r10k::deploy::begin': }
   ->
   Class['bsl_puppet::server::ssh_keys']

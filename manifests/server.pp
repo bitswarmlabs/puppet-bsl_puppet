@@ -1,58 +1,52 @@
 class bsl_puppet::server(
   $certname = $bsl_puppet::server::params::certname,
-  $dns_alt_names = $bsl_puppet::server::params::dns_alt_names,
-  $server_common_modules_path = $bsl_puppet::server::params::server_common_modules_path,
-  $server_core_modules_path  = $bsl_puppet::server::params::server_core_modules_path,
-  $server_jvm_min_heap_size = $bsl_puppet::server::params::server_jvm_min_heap_size,
-  $server_jvm_max_heap_size = $bsl_puppet::server::params::server_jvm_max_heap_size,
-  $use_foreman = $bsl_puppet::server::params::use_foreman,
-  $confdir = $bsl_puppet::server::params::confdir,
-  $hiera_config_path = $bsl_puppet::server::params::hiera_config_path,
-  $puppet_home = $bsl_puppet::server::params::puppet_home,
-  $external_nodes = '',
+  $dns_alt_names = []
 ) inherits bsl_puppet::server::params {
-  include '::bsl_puppet'
+  include 'bsl_puppet::config'
 
-  # $set_fqdn = "${bsl_puppet::server::hostname::hostname}.${bsl_puppet::server::hostname::domain}"
-  # if $set_fqdn != $certname {
-  #   $_dns_alt_names = concat($dns_alt_names, $set_fqdn)
-  # }
-  # else {
-  #   $_dns_alt_names = $dns_alt_names
-  # }
-  $unique_dns_alts = unique($dns_alt_names)
+  $_dns_alt_names = concat($dns_alt_names, $bsl_puppet::config::server_dns_alt_names)
 
-  # host { $unique_dns_alts:
-  #   ip => $::ipaddress,
-  # }
+  if $certname == $bsl_puppet::config::puppetmaster_fqdn {
+    $set_dns_alt_names = $_dns_alt_names
+  }
+  else {
+    $set_dns_alt_names = concat($_dns_alt_names, $bsl_puppet::config::puppetmaster_fqdn)
+  }
+
+  $unique_dns_alts = unique($set_dns_alt_names)
+
+  $manage_packages = str2bool($bsl_puppet::config::manage_packages) ? {
+      true => 'server',
+      default => undef,
+  }
 
   class { '::puppet':
-    puppetmaster                  => $::bsl_puppet::puppetmaster,
+    puppetmaster                  => $bsl_puppet::config::puppetmaster_fqdn,
     client_certname               => $certname,
+    server_certname               => $certname,
     dns_alt_names                 => $unique_dns_alts,
     server                        => true,
-    server_certname               => $certname,
     server_implementation         => 'puppetserver',
     server_directory_environments => true,
     server_dynamic_environments   => true, # since its managed by r10k
-    server_common_modules_path    => $server_common_modules_path,
+    server_common_modules_path    => $bsl_puppet::config::server_common_modules_path,
     server_foreman                => false, # handling separately, see below
-    server_external_nodes         => $external_nodes,
-    server_jvm_min_heap_size      => $server_jvm_min_heap_size,
-    server_jvm_max_heap_size      => $server_jvm_max_heap_size,
+    server_external_nodes         => $bsl_puppet::config::server_external_nodes,
+    server_jvm_min_heap_size      => $bsl_puppet::config::server_jvm_min_heap_size,
+    server_jvm_max_heap_size      => $bsl_puppet::config::server_jvm_max_heap_size,
     server_reports                => 'store,puppetdb',
     server_storeconfigs_backend   => 'puppetdb',
-    hiera_config                  => $hiera_config_path,
-    environment                   => $::bsl_puppet::environment,
-    manage_packages               => false,
+    hiera_config                  => $bsl_puppet::config::hiera_config_path,
+    environment                   => $bsl_puppet::config::server_environment,
+    manage_packages               => $manage_packages,
     # main_template                 => 'bsl_puppet/puppet.conf.erb',
     # agent_template                => 'bsl_puppet/agent/puppet.conf.erb',
     # server_template               => 'bsl_puppet/server/puppet.conf.erb',
-    #auth_template                 => 'bsl_puppet/auth.conf.erb',
-    #nsauth_template               => 'bsl_puppet/namespaceauth.conf.erb'
+    # auth_template                 => 'bsl_puppet/auth.conf.erb',
+    # nsauth_template               => 'bsl_puppet/namespaceauth.conf.erb'
   }
 
-  if str2bool($use_foreman) {
+  if str2bool($bsl_puppet::config::use_foreman) {
     ## Foreman
     # Include foreman components for the puppetmaster
     # ENC script, reporting script etc.

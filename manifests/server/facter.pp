@@ -3,7 +3,13 @@ class bsl_puppet::server::facter {
     ensure => directory,
   }
   ->
-  file { ['/etc/facter/facts.d/', '/opt/puppetlabs/facter/facts.d', '/etc/puppetlabs/facter/facts.d']:
+  file { ['/etc/facter/facts.d', '/opt/puppetlabs/facter/facts.d', '/etc/puppetlabs/facter/facts.d']:
     ensure => directory,
+  }
+
+  file { '/opt/puppetlabs/facter/facts.d/bitswarmlabs.yaml':
+    ensure => file,
+    content => template("bsl_puppet/bitswarmlabs-facts.yaml.erb"),
+    require => File['/opt/puppetlabs/facter/facts.d']
   }
 }
