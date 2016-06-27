@@ -142,7 +142,7 @@ class bsl_puppet(
     }
   }
 
-  if str2bool($bsl_puppet::config::server) {
+  if str2bool($server) or str2bool($bsl_puppet::config::server) {
     include 'bsl_puppet::server'
 
     if str2bool($bsl_puppet::config::manage_hostname) {
