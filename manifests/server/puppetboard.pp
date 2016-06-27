@@ -44,7 +44,7 @@ class bsl_puppet::server::puppetboard {
     realm     => 'puppetboard',
     mechanism => basic,
     ensure    => present,
-    refresh   => Service['apache'],
+    notify    => Service['apache'],
   }
   ->
   file { "${::puppetboard::apache::vhost::basedir}/htpasswd":
