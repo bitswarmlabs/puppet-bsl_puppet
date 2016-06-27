@@ -15,9 +15,9 @@ class bsl_puppet::server(
 ) inherits bsl_puppet::server::params {
   include '::bsl_puppet'
 
-  $fqdn = "${hostname}.${domain}"
-  if $fqdn != $certname {
-    $_dns_alt_names = concat($dns_alt_names, $fqdn)
+  $set_fqdn = "${hostname}.${domain}"
+  if $set_fqdn != $certname {
+    $_dns_alt_names = concat($dns_alt_names, $set_fqdn)
   }
   else {
     $_dns_alt_names = $dns_alt_names
@@ -28,12 +28,16 @@ class bsl_puppet::server(
     host_aliases => unique($_dns_alt_names)
   }
 
-  if $fqdn != $::fqdn {
+  if $set_fqdn != $::fqdn {
+    notify { "## bsl_puppet::server changing hostname to ${set_fqdn}": }
     class { '::hostname':
       hostname => $hostname,
       domain   => $domain,
       before   => Class['::puppet'],
     }
+  }
+  else {
+    notify { "## bsl_puppet::server not changing hostname to ${set_fqdn} (fqdn=${::fqdn}":}
   }
 
   class { '::puppet':
