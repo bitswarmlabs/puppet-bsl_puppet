@@ -103,6 +103,8 @@ class bsl_puppet::config(
   $hiera_merge_behavior         = $bsl_puppet::params::hiera_merge_behavior,
 
   $use_foreman                  = $bsl_puppet::params::use_foreman,
+
+  $ruby_gems_version            = 'present',
 ) inherits bsl_puppet::params {
   if !empty($r10k_sources) {
     validate_hash($r10k_sources)

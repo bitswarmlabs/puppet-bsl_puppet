@@ -124,7 +124,7 @@ class bsl_puppet(
   if str2bool($manage_dependencies) {
     if $manage_dependencies_via == 'declare' {
       class { '::ruby':
-        gems_version => 'latest'
+        gems_version => $bsl_puppet::config::ruby_gems_version,
       }
       class { '::java':
 
