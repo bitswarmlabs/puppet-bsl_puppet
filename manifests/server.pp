@@ -54,7 +54,7 @@ class bsl_puppet::server(
     # auth_template                 => 'bsl_puppet/auth.conf.erb',
     # nsauth_template               => 'bsl_puppet/namespaceauth.conf.erb'
   }
-  ->
+  
   file { "${::puppet::dir}/puppet.conf":
     ensure => file,
     notify => [ Service['puppet'], Service['puppetserver'] ],
