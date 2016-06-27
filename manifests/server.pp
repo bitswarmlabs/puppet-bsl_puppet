@@ -55,6 +55,10 @@ class bsl_puppet::server(
     # nsauth_template               => 'bsl_puppet/namespaceauth.conf.erb'
   }
 
+  File["${::puppet::conf_dir}/puppet.conf"]~>Service['puppet']
+  File["${::puppet::conf_dir}/puppet.conf"]~>Service['puppetserver']
+  # File["${::puppet::conf_dir}/puppet.conf"]~>Service['puppetdb']
+
   if str2bool($bsl_puppet::config::use_foreman) {
     ## Foreman
     # Include foreman components for the puppetmaster
