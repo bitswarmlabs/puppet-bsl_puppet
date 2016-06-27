@@ -1,6 +1,4 @@
 class bsl_puppet::server(
-  $hostname = $bsl_puppet::server::params::hostname,
-  $domain = $bsl_puppet::server::params::domain,
   $certname = $bsl_puppet::server::params::certname,
   $dns_alt_names = $bsl_puppet::server::params::dns_alt_names,
   $server_common_modules_path = $bsl_puppet::server::params::server_common_modules_path,
@@ -26,18 +24,6 @@ class bsl_puppet::server(
   host { $certname:
     ip           => $::ipaddress,
     host_aliases => unique($_dns_alt_names)
-  }
-
-  if $set_fqdn != $::fqdn {
-    notify { "## bsl_puppet::server changing hostname to ${set_fqdn}": }
-    class { '::hostname':
-      hostname => $hostname,
-      domain   => $domain,
-      before   => Class['::puppet'],
-    }
-  }
-  else {
-    notify { "## bsl_puppet::server not changing hostname to ${set_fqdn} (fqdn=${::fqdn}":}
   }
 
   class { '::puppet':
