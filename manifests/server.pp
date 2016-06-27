@@ -45,7 +45,7 @@ class bsl_puppet::server(
     server_jvm_max_heap_size      => $bsl_puppet::config::server_jvm_max_heap_size,
     server_reports                => str2bool($bsl_puppet::config::manage_puppetdb) ? {
       true => 'store,puppetdb',
-      default => undef,
+      default => 'store',
     },
     server_storeconfigs_backend   => 'puppetdb',
     hiera_config                  => $bsl_puppet::config::hiera_config_path,
