@@ -95,6 +95,7 @@ class bsl_puppet::params {
   $puppetboard_hostname = $server_external_fqdn
   $puppetboard_user = $default_admin_acct_name
   $puppetboard_pass = $default_admin_acct_pass
+  $puppetboard_manage_apache_via = 'declare'
 
   if defined(Class['bsl_puppet::config']) {
     $config_via = 'include'

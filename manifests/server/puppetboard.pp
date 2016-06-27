@@ -5,8 +5,20 @@ class bsl_puppet::server::puppetboard(
 )  {
   assert_private("bsl_puppet::server::puppetboard is a private class")
 
-  include '::apache'
-  include '::apache::mod::wsgi'
+  include 'bsl_puppet::config'
+
+  if $bsl_puppet::config::puppetboard_manage_apache_via == 'declare' {
+    class { '::apache':
+      default_vhost   => false,
+      purge_vhost_dir => true
+    }
+
+    class { '::apache::mod::wsgi': }
+  }
+  elsif $bsl_puppet::config::puppetboard_manage_apache_via == 'include' {
+    include '::apache'
+    include '::apache::mod::wsgi'
+  }
 
   class { '::puppetboard':
     puppetdb_host => 'puppet',
