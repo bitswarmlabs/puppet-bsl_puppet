@@ -93,7 +93,8 @@ class bsl_puppet::config(
 
   $puppetboard_user               = $bsl_puppet::params::puppetboard_user,
   $puppetboard_pass               = $bsl_puppet::params::puppetboard_pass,
-  $puppetboard_hostname           = $bsl_puppet::params::puppetboard_hostname,
+  $puppetboard_fqdn               = $bsl_puppet::params::puppetboard_fqdn,
+  $puppetboard_port               = $bsl_puppet::params::puppetboard_port,
   $puppetboard_manage_apache_via  = $bsl_puppet::params::puppetboard_manage_apache_via,
 
   $hiera_config_path              = $bsl_puppet::params::hiera_config_path,

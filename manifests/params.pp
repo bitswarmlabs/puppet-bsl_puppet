@@ -92,7 +92,8 @@ class bsl_puppet::params {
   $r10k_github_api_token = hiera('github_api_token', '')
   $r10k_use_mcollective = 'false'
 
-  $puppetboard_hostname = $server_external_fqdn
+  $puppetboard_fqdn = $server_external_fqdn
+  $puppetboard_port = '80'
   $puppetboard_user = $default_admin_acct_name
   $puppetboard_pass = $default_admin_acct_pass
   $puppetboard_manage_apache_via = 'declare'
