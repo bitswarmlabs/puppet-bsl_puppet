@@ -54,10 +54,11 @@ class bsl_puppet::server(
     # auth_template                 => 'bsl_puppet/auth.conf.erb',
     # nsauth_template               => 'bsl_puppet/namespaceauth.conf.erb'
   }
-  ~>
-  File["${::puppet::dir}/puppet.conf"]~>Service['puppet']
-  File["${::puppet::dir}/puppet.conf"]~>Service['puppetserver']
-  # File["${::puppet::conf_dir}/puppet.conf"]~>Service['puppetdb']
+  ->
+  file { "${::puppet::dir}/puppet.conf":
+    ensure => file,
+    notify => [ Service['puppet'], Service['puppetserver'] ],
+  }
 
   if str2bool($bsl_puppet::config::use_foreman) {
     ## Foreman
