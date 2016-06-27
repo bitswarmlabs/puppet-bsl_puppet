@@ -46,7 +46,7 @@ class bsl_puppet::server(
     server_reports                => str2bool($bsl_puppet::config::manage_puppetdb) ? {
       true => 'store,puppetdb',
       default => undef,
-    }
+    },
     server_storeconfigs_backend   => 'puppetdb',
     hiera_config                  => $bsl_puppet::config::hiera_config_path,
     environment                   => $bsl_puppet::config::server_environment,
