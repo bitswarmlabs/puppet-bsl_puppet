@@ -51,12 +51,12 @@ class bsl_puppet(
   $server_domain              = $bsl_puppet::params::server_domain,
   $server_certname            = $bsl_puppet::params::server_certname,
 
-  $manage_hostname            = $bsl_puppet::params::manage_hostname,
-  $manage_puppetdb            = $bsl_puppet::params::manage_puppetdb,
   $manage_hiera               = $bsl_puppet::params::manage_hiera,
+  $manage_puppetdb            = $bsl_puppet::params::manage_puppetdb,
+  $manage_hostname            = $bsl_puppet::params::manage_hostname,
+  $manage_puppetboard         = $bsl_puppet::params::manage_puppetboard,
   $manage_r10k                = $bsl_puppet::params::manage_r10k,
   $manage_r10k_webhooks       = $bsl_puppet::params::manage_r10k_webhooks,
-  $manage_puppetboard         = $bsl_puppet::params::manage_puppetboard,
   $manage_dependencies        = $bsl_puppet::params::manage_dependencies,
 
   $puppetdb_database_host     = $bsl_puppet::params::puppetdb_database_host,
