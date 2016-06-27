@@ -13,14 +13,14 @@ class bsl_puppet::server(
 ) inherits bsl_puppet::server::params {
   include '::bsl_puppet'
 
-  $set_fqdn = "${bsl_puppet::server::hostname::hostname}.${bsl_puppet::server::hostname::domain}"
-  if $set_fqdn != $certname {
-    $_dns_alt_names = concat($dns_alt_names, $set_fqdn)
-  }
-  else {
-    $_dns_alt_names = $dns_alt_names
-  }
-  $unique_dns_alts = unique($_dns_alt_names)
+  # $set_fqdn = "${bsl_puppet::server::hostname::hostname}.${bsl_puppet::server::hostname::domain}"
+  # if $set_fqdn != $certname {
+  #   $_dns_alt_names = concat($dns_alt_names, $set_fqdn)
+  # }
+  # else {
+  #   $_dns_alt_names = $dns_alt_names
+  # }
+  $unique_dns_alts = unique($dns_alt_names)
 
   # host { $unique_dns_alts:
   #   ip => $::ipaddress,
