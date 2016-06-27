@@ -142,23 +142,23 @@ class bsl_puppet(
     }
   }
 
-  if str2bool($server) {
+  if str2bool($bsl_puppet::config::server) {
     include 'bsl_puppet::server'
 
-    if str2bool($manage_hostname) or str2bool($bsl_puppet::config::manage_hostname) {
+    if str2bool($bsl_puppet::config::manage_hostname) {
       include 'bsl_puppet::server::hostname'
       Class['bsl_puppet::server::hostname']->Class['bsl_puppet::server']
     }
 
-    if str2bool($manage_puppetdb) or str2bool($bsl_puppet::config::manage_puppetdb) {
+    if str2bool($bsl_puppet::config::manage_puppetdb) {
       include 'bsl_puppet::server::puppetdb'
     }
 
-    if str2bool($manage_hiera) or str2bool($bsl_puppet::config::manage_hiera) {
+    if str2bool($bsl_puppet::config::manage_hiera) {
       include 'bsl_puppet::server::hiera'
     }
 
-    if str2bool($manage_r10k) or str2bool($bsl_puppet::config::manage_r10k) {
+    if str2bool($bsl_puppet::config::manage_r10k) {
       include 'bsl_puppet::server::r10k'
       include 'bsl_puppet::server::r10k::envs'
       include 'bsl_puppet::server::r10k::cleanup'
@@ -172,7 +172,7 @@ class bsl_puppet(
       Class['bsl_puppet::server::r10k::cleanup']
     }
 
-    if str2bool($manage_puppetboard) or str2bool($bsl_puppet::config::manage_puppetboard) {
+    if str2bool($bsl_puppet::config::manage_puppetboard) {
       include 'bsl_puppet::server::puppetboard'
     }
   }
