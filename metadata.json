@@ -1,6 +1,6 @@
 {
   "name": "bitswarmlabs/bsl_puppet",
-  "version": "0.6.0",
+  "version": "0.6.3",
   "author": "bitswarmlabs",
   "summary": "Convenience wrapper for installing Puppet 4, PuppetDB, and r10k.\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D",
   "license": "MIT",
