@@ -108,6 +108,8 @@ class bsl_puppet::config(
 
   $ruby_gems_version            = 'present',
 ) inherits bsl_puppet::params {
+  notify { '## hello from bsl_puppet::config': }
+
   if !empty($r10k_sources) {
     validate_hash($r10k_sources)
   }

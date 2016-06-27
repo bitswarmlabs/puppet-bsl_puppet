@@ -5,6 +5,8 @@ class bsl_puppet::server::r10k::webhook(
 ) {
   assert_private("bsl_puppet::server::r10k::webhook is a private class")
 
+  notify { '## hello from bsl_puppet::server::r10k::webhook': }
+
   include 'bsl_puppet::server::r10k'
 
   if str2bool($bsl_puppet::config::r10k_use_mcollective) {

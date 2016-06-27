@@ -1,4 +1,6 @@
 class bsl_puppet::agent {
+  notify { '## hello from bsl_puppet::agent': }
+
   include 'bsl_puppet::config'
 
   $manage_packages = str2bool($bsl_puppet::config::manage_packages) ? {

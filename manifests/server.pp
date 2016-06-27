@@ -4,6 +4,8 @@ class bsl_puppet::server(
 ) inherits bsl_puppet::server::params {
   include 'bsl_puppet::config'
 
+  notify { '## hello from bsl_puppet::server': }
+
   $_dns_alt_names = concat($dns_alt_names, $bsl_puppet::config::server_dns_alt_names)
 
   if $certname == $bsl_puppet::config::puppetmaster_fqdn {

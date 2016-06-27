@@ -1,6 +1,8 @@
 class bsl_puppet::server::puppetdb {
   assert_private('bsl_puppet::server::puppetdb is a private class')
 
+  notify { '## hello from bsl_puppet::server::puppetdb': }
+
   include 'bsl_puppet::config'
 
   class { '::puppetdb::master::config':
