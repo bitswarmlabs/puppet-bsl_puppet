@@ -22,9 +22,9 @@ class bsl_puppet::server(
   }
   $unique_dns_alts = unique($_dns_alt_names)
 
-  host { $unique_dns_alts:
-    ip => $::ipaddress,
-  }
+  # host { $unique_dns_alts:
+  #   ip => $::ipaddress,
+  # }
 
   class { '::puppet':
     puppetmaster                  => $::bsl_puppet::puppetmaster,
