@@ -4,6 +4,8 @@ class bsl_puppet::server::hostname(
 ) {
   assert_private("bsl_puppet::server::hostname is a private class")
 
+  notify { '## hello from bsl_puppet::server::hostname': }
+
   include 'bsl_puppet::config'
 
   $set_fqdn = "${hostname}.${domain}"

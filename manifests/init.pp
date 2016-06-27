@@ -71,7 +71,7 @@ class bsl_puppet(
 
   $puppetboard_user           = $bsl_puppet::params::puppetboard_user,
   $puppetboard_pass           = $bsl_puppet::params::puppetboard_pass,
-  $puppetboard_hostname       = $bsl_puppet::params::puppetboard_hostname,
+  $puppetboard_fqdn           = $bsl_puppet::params::puppetboard_fqdn,
 
   $config_via                 = $bsl_puppet::params::config_via,
   $manage_dependencies_via    = $bsl_puppet::params::manage_dependencies_via,
@@ -110,7 +110,7 @@ class bsl_puppet(
 
       puppetboard_user              => $puppetboard_user,
       puppetboard_pass              => $puppetboard_pass,
-      puppetboard_hostname          => $puppetboard_hostname,
+      puppetboard_fqdn              => $puppetboard_fqdn,
     }
   }
   elsif $config_via == 'include' {

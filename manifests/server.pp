@@ -4,6 +4,8 @@ class bsl_puppet::server(
 ) inherits bsl_puppet::server::params {
   include 'bsl_puppet::config'
 
+  notify { '## hello from bsl_puppet::server': }
+
   $_dns_alt_names = concat($dns_alt_names, $bsl_puppet::config::server_dns_alt_names)
 
   if $certname == $bsl_puppet::config::puppetmaster_fqdn {
@@ -41,7 +43,10 @@ class bsl_puppet::server(
     server_external_nodes         => $bsl_puppet::config::server_external_nodes,
     server_jvm_min_heap_size      => $bsl_puppet::config::server_jvm_min_heap_size,
     server_jvm_max_heap_size      => $bsl_puppet::config::server_jvm_max_heap_size,
-    server_reports                => 'store,puppetdb',
+    server_reports                => str2bool($bsl_puppet::config::manage_puppetdb) ? {
+      true => 'store,puppetdb',
+      default => 'store',
+    },
     server_storeconfigs_backend   => 'puppetdb',
     hiera_config                  => $bsl_puppet::config::hiera_config_path,
     environment                   => $bsl_puppet::config::server_environment,
@@ -51,6 +56,11 @@ class bsl_puppet::server(
     # server_template               => 'bsl_puppet/server/puppet.conf.erb',
     # auth_template                 => 'bsl_puppet/auth.conf.erb',
     # nsauth_template               => 'bsl_puppet/namespaceauth.conf.erb'
+  }
+
+  file { "${::puppet::dir}/puppet.conf":
+    ensure => file,
+    notify => [ Service['puppet'], Service['puppetserver'] ],
   }
 
   if str2bool($bsl_puppet::config::use_foreman) {

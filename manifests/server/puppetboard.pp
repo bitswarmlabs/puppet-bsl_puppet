@@ -1,6 +1,8 @@
 class bsl_puppet::server::puppetboard {
   assert_private("bsl_puppet::server::puppetboard is a private class")
 
+  notify { '## hello from bsl_puppet::server::puppetboard': }
+
   include 'bsl_puppet::config'
 
   if $bsl_puppet::config::puppetboard_manage_apache_via == 'declare' {

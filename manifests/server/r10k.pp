@@ -1,6 +1,8 @@
 class bsl_puppet::server::r10k {
   assert_private("bsl_puppet::server::r10k is a private class")
 
+  notify { '## hello from bsl_puppet::server::r10k': }
+
   include 'bsl_puppet::config'
 
   if !empty($bsl_puppet::config::r10k_sources) {
