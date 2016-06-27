@@ -20,16 +20,16 @@ class bsl_puppet::server(
   else {
     $_dns_alt_names = $dns_alt_names
   }
+  $unique_dns_alts = unique($_dns_alt_names)
 
-  host { $certname:
-    ip           => $::ipaddress,
-    host_aliases => unique($_dns_alt_names)
+  host { $unique_dns_alts:
+    ip => $::ipaddress,
   }
 
   class { '::puppet':
     puppetmaster                  => $::bsl_puppet::puppetmaster,
     client_certname               => $certname,
-    dns_alt_names                 => unique($_dns_alt_names),
+    dns_alt_names                 => $unique_dns_alts,
     server                        => true,
     server_certname               => $certname,
     server_implementation         => 'puppetserver',
@@ -51,16 +51,6 @@ class bsl_puppet::server(
     #auth_template                 => 'bsl_puppet/auth.conf.erb',
     #nsauth_template               => 'bsl_puppet/namespaceauth.conf.erb'
   }
-
-  # Class['bsl_puppet::server::hostname']~>
-  # exec { 'generate puppetserver cert':
-  #   command   => "puppet cert generate ${::bsl_puppet::server::fqdn}",
-  #   creates   => "${::puppet::server_ssl_dir}/certs/${::bsl_puppet::server::fqdn}.pem",
-  #   path      => '/opt/puppetmaster/bin:/usr/bin:/bin',
-  #   notify    => [ Service['puppetserver'], Service['puppet'] ],
-  #   subscribe => Class['bsl_puppet::server::hostname'],
-  #   logoutput => true,
-  # }
 
   if str2bool($use_foreman) {
     ## Foreman
