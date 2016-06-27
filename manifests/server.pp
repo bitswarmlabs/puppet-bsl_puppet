@@ -13,7 +13,7 @@ class bsl_puppet::server(
 ) inherits bsl_puppet::server::params {
   include '::bsl_puppet'
 
-  $set_fqdn = "${hostname}.${domain}"
+  $set_fqdn = "${bsl_puppet::server::hostname::hostname}.${bsl_puppet::server::hostname::domain}"
   if $set_fqdn != $certname {
     $_dns_alt_names = concat($dns_alt_names, $set_fqdn)
   }
