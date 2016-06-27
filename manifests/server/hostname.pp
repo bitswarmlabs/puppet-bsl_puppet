@@ -2,6 +2,10 @@ class bsl_puppet::server::hostname(
   $hostname = $::hostname,
   $domain = $::domain,
 ) {
+  assert_private
+
+  include 'bsl_puppet::config'
+
   $set_fqdn = "${hostname}.${domain}"
 
   if $set_fqdn != $::fqdn {

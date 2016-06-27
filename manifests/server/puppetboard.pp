@@ -3,6 +3,8 @@ class bsl_puppet::server::puppetboard(
   $admin_pass = 'admin',
   $www_hostname = 'puppet',
 )  {
+  assert_private('bsl_puppet::server::puppetboard is a private class')
+
   include '::apache'
   include '::apache::mod::wsgi'
 

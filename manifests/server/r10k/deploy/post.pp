@@ -1,4 +1,6 @@
 class bsl_puppet::server::r10k::deploy::post {
+  assert_private("bsl_puppet::server::r10k::deploy::post is a private class")
+
   file { $::puppet::sharedir:
     ensure => directory,
   }

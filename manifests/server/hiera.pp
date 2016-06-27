@@ -1,28 +1,15 @@
-class bsl_puppet::server::hiera(
-  $datadir = $bsl_puppet::server::params::hiera_datadir,
-  $backends = $bsl_puppet::server::params::hiera_backends,
-  $hierarchy = $bsl_puppet::server::params::hiera_hierarchy,
-  $logger = $bsl_puppet::server::params::hiera_logger,
-  $merge_behavior = $bsl_puppet::server::params::hiera_merge_behavior,
-) inherits bsl_puppet::server::params {
-  # notify { '## hello from bsl_puppet::server::hiera': }
-  
-  $hiera_config_path = $bsl_puppet::server::hiera_config_path
-  $confdir = $bsl_puppet::server::confdir
+class bsl_puppet::server::hiera {
+  include 'bsl_puppet::config'
 
-  ## Hiera
-  # file { $hiera_config_path:
-  #   ensure  => file,
-  #   content => template('bsl_puppet/server/hiera.yaml.erb')
-  # }
+  notify { '## hello from bsl_puppet::server::hiera': }
 
   class { '::hiera':
-    hiera_yaml     => $hiera_config_path,
-    datadir        => $datadir,
-    backends       => $backends,
-    hierarchy      => $hierarchy,
-    logger         => $logger,
-    merge_behavior => $merge_behavior,
-    confdir        => $confdir,
+    hiera_yaml     => $bsl_puppet::config::hiera_config_path,
+    datadir        => $bsl_puppet::config::hiera_datadir,
+    backends       => $bsl_puppet::config::hiera_backends,
+    hierarchy      => $bsl_puppet::config::hiera_hierarchy,
+    logger         => $bsl_puppet::config::hiera_logger,
+    merge_behavior => $bsl_puppet::config::hiera_merge_behavior,
+    confdir        => $bsl_puppet::config::confdir,
   }
 }
