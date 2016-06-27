@@ -7,7 +7,7 @@ class bsl_puppet::params {
 
   $server_environment = $::ec2_tag_environment ? {
     /.+/ => $::ec2_tag_environment,
-    default => $::environment,
+    default => 'production',
   }
 
   $server_hostname = hiera('hostname', 'puppet')
@@ -15,7 +15,7 @@ class bsl_puppet::params {
   $server_certname = "${server_hostname}.${server_domain}"
   $server_external_fqdn = hiera('external_fqdn', $::fqdn)
   $server_external_nodes = ''
-  $server_dns_alt_names = [ 'puppet', $::fqdn]
+  $server_dns_alt_names = [ 'puppet', $server_certname, $::fqdn]
 
   $manage_packages = 'false'
 

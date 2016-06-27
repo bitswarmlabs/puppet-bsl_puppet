@@ -15,9 +15,16 @@ class bsl_puppet::server(
 
   $unique_dns_alts = unique($set_dns_alt_names)
 
+  if ! str2bool($bsl_puppet::config::manage_hostname) {
+    host { $bsl_puppet::config::server_hostname:
+      ip           => '127.0.0.1',
+      host_aliases => delete($unique_dns_alts, $bsl_puppet::config::server_hostname),
+    }
+  }
+
   $manage_packages = str2bool($bsl_puppet::config::manage_packages) ? {
-      true => 'server',
-      default => undef,
+    true    => 'server',
+    default => undef,
   }
 
   class { '::puppet':
