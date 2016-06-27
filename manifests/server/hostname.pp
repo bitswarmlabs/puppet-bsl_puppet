@@ -2,7 +2,7 @@ class bsl_puppet::server::hostname(
   $hostname = $::hostname,
   $domain = $::domain,
 ) {
-  assert_private
+  assert_private("bsl_puppet::server::hostname is a private class")
 
   include 'bsl_puppet::config'
 
