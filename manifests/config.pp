@@ -47,7 +47,9 @@
 # Copyright 2016 Bitswarm Labs
 #
 class bsl_puppet::config(
-  $puppetmaster_fqdn            = $bsl_puppet::params::puppetmaster_fqdn,
+  $puppetmaster_fqdn              = $bsl_puppet::params::puppetmaster_fqdn,
+  $app_project                    = $bsl_puppet::params::app_project,
+  $app_environment                = $bsl_puppet::params::app_environment,
 
   $server                         = $bsl_puppet::params::server,
   $server_environment             = $bsl_puppet::params::server_environment,
@@ -77,7 +79,7 @@ class bsl_puppet::config(
   $puppetdb_database_user         = $bsl_puppet::params::puppetdb_database_user,
   $puppetdb_database_pass         = $bsl_puppet::params::puppetdb_database_pass,
   $puppetdb_soft_write_failure    = $bsl_puppet::params::puppetdb_soft_write_failure,
-  $puppetdb_validate_connection = $bsl_puppet::params::puppetdb_validate_connection,
+  $puppetdb_validate_connection   = $bsl_puppet::params::puppetdb_validate_connection,
 
   $r10k_sources                   = $bsl_puppet::params::r10k_sources,
   $r10k_init_deploy_enabled       = $bsl_puppet::params::r10k_init_deploy_enabled,

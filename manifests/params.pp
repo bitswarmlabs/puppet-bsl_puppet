@@ -5,19 +5,40 @@ class bsl_puppet::params {
 
   $server = 'false'
 
-  $server_environment = $::ec2_tag_environment ? {
-    /.+/ => $::ec2_tag_environment,
-    default => 'production',
+  $server_environment = empty($::ec2_tag_environment) ? {
+    false => $::ec2_tag_environment,
+    default => empty($::app_environment) ? {
+      false => $::app_environment,
+      default => $::environment,
+    }
   }
 
+  $app_project = empty($::app_project) ? {
+    false => $::app_project,
+    default => 'default'
+  }
+
+  $app_environment = $server_environment
+
   $server_hostname = hiera('hostname', 'puppet')
-  $server_domain = hiera('domain', $::domain)
-  $server_certname = "${server_hostname}.${server_domain}"
+  $server_domain = hiera('domain', 'local')
   $server_external_fqdn = hiera('external_fqdn', $::fqdn)
   $server_external_nodes = ''
-  $server_dns_alt_names = [ 'puppet', $server_certname, $::fqdn]
 
-  $manage_packages = 'false'
+  # Generate hostname
+  if empty($server_domain) {
+    # No domain pro\vided, won't be a FQDN
+    $server_fqdn = $server_hostname
+  }
+  else {
+    $server_fqdn = "${server_hostname}.${server_domain}"
+  }
+
+  $server_certname = $server_fqdn
+
+  $server_dns_alt_names = unique([ $server_hostname, $server_certname, $server_fqdn, $::fqdn ])
+
+  $manage_packages = 'true'
 
   $server_jvm_min_heap_size = '512M'
   $server_jvm_max_heap_size = '900M'
@@ -44,20 +65,20 @@ class bsl_puppet::params {
   ]
 
   $server_core_modules_path  = [
-    "/etc/puppetlabs/code/infrastructure/${::environment}/modules",
-    "/etc/puppetlabs/code/infrastructure/${::environment}/dist",
+    "/etc/puppetlabs/code/infrastructure/${server_environment}/modules",
+    "/etc/puppetlabs/code/infrastructure/${server_environment}/dist",
     "/etc/puppetlabs/code/environments/core/modules",
     "/etc/puppetlabs/code/environments/core/dist",
   ]
 
   $hiera_config_path = '/etc/puppetlabs/code/hiera.yaml'
   $hiera_logger = 'puppet'
-  $hiera_merge_behavior = 'deep'
+  $hiera_merge_behavior = 'deeper'
   $hiera_datadir = '/etc/puppetlabs/code'
   $hiera_backends = [ 'yaml' ]
   $hiera_hierarchy = [
-    "infrastructure/${environment}/hieradata/common",
-    "infrastructure/${environment}/hieradata/nodes/%{::trusted.certname}",
+    "infrastructure/${server_environment}/hieradata/common",
+    "infrastructure/${server_environment}/hieradata/nodes/%{::trusted.certname}",
     'environments/core/hieradata/common',
     'environments/core/hieradata/nodes/%{::trusted.certname}',
     'environments/%{::environment}/hieradata/common',
@@ -66,8 +87,8 @@ class bsl_puppet::params {
     'environments/%{::environment}/hieradata/%{::ec2_tag_role}',
     'environments/%{::environment}/hieradata/%{::ec2_tag_environment}',
     'environments/%{::environment}/hieradata/defaults',
-    "infrastructure/${environment}/hieradata/bootstrap/%{::app_project}",
-    "infrastructure/${environment}/hieradata/defaults",
+    "infrastructure/${server_environment}/hieradata/bootstrap/%{::app_project}",
+    "infrastructure/${server_environment}/hieradata/defaults",
     'environments/core/hieradata/bootstrap/%{::app_project}',
     'environments/core/hieradata/defaults',
   ]
