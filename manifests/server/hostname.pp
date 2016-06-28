@@ -46,8 +46,8 @@ class bsl_puppet::server::hostname(
   # Make sure the hosts file has an entry
   host { 'default hostname v4':
     ensure        => present,
-    name          => $set_fqdn,
-    host_aliases  => delete($unique_dns_alts, $set_fqdn),
+    name          => $hostname,
+    host_aliases  => delete($unique_dns_alts, $hostname),
     ip            => '127.0.0.1',
   }
 
