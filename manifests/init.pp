@@ -144,6 +144,7 @@ class bsl_puppet(
 
   if str2bool($server) or str2bool($bsl_puppet::config::server) {
     include 'bsl_puppet::server'
+    include 'bsl_puppet::server::ssh_keys'
 
     if str2bool($bsl_puppet::config::manage_hostname) {
       include 'bsl_puppet::server::hostname'
