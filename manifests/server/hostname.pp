@@ -64,9 +64,9 @@ class bsl_puppet::server::hostname(
   # could rewite with a newer loop approach as per:
   # https://docs.puppetlabs.com/puppet/latest/reference/lang_iteration.html
 
-  define bsl_puppet::server::hostname::reloads ($service = $title) {
-    Exec['bsl_apply_hostname'] ~> Service[$service]
-  }
-
   bsl_puppet::server::hostname::reloads { $reloads: }
+}
+
+define bsl_puppet::server::hostname::reloads ($service = $title) {
+  Exec['bsl_apply_hostname'] ~> Service[$service]
 }
