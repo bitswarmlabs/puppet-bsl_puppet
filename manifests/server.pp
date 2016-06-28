@@ -29,6 +29,15 @@ class bsl_puppet::server(
     default => undef,
   }
 
+  if str2bool($bsl_puppet::config::manage_puppetdb) {
+    $server_reports = 'store,puppetdb'
+    $server_storeconfigs_backend = 'puppetdb'
+  }
+  else {
+    $server_reports = 'store'
+    $server_storeconfigs_backend = false
+  }
+
   class { '::puppet':
     puppetmaster                  => $bsl_puppet::config::puppetmaster_fqdn,
     client_certname               => $certname,
@@ -43,11 +52,8 @@ class bsl_puppet::server(
     server_external_nodes         => $bsl_puppet::config::server_external_nodes,
     server_jvm_min_heap_size      => $bsl_puppet::config::server_jvm_min_heap_size,
     server_jvm_max_heap_size      => $bsl_puppet::config::server_jvm_max_heap_size,
-    server_reports                => str2bool($bsl_puppet::config::manage_puppetdb) ? {
-      true => 'store,puppetdb',
-      default => 'store',
-    },
-    server_storeconfigs_backend   => 'puppetdb',
+    server_reports                => $server_reports,
+    server_storeconfigs_backend   => $server_storeconfigs_backend,
     hiera_config                  => $bsl_puppet::config::hiera_config_path,
     environment                   => $bsl_puppet::config::server_environment,
     manage_packages               => $manage_packages,
