@@ -7,7 +7,7 @@ class bsl_puppet::server::r10k::deploy {
   ->
   Class['bsl_puppet::server::ssh_keys']
   ->
-  Class['::r10k::install']
+  Class['bsl_puppet::server::r10k']
   ~>
   exec { 'r10k deploy':
     command   => 'r10k deploy environment -v -p',
