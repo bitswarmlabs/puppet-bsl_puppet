@@ -17,7 +17,7 @@ class bsl_puppet::params {
     false => $::app_project,
     default => 'default'
   }
-  
+
   $app_environment = $server_environment
 
   $server_hostname = hiera('hostname', 'puppet')
@@ -25,7 +25,7 @@ class bsl_puppet::params {
   $server_certname = "${server_hostname}.${server_domain}"
   $server_external_fqdn = hiera('external_fqdn', $::fqdn)
   $server_external_nodes = ''
-  $server_dns_alt_names = [ 'puppet', $server_certname, $::fqdn]
+  $server_dns_alt_names = [ $server_hostname, $server_certname, $::fqdn]
 
   $manage_packages = 'false'
 

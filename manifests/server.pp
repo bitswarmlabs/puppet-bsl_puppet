@@ -6,22 +6,12 @@ class bsl_puppet::server(
 
   notify { '## hello from bsl_puppet::server': }
 
-  $_dns_alt_names = concat($dns_alt_names, $bsl_puppet::config::server_dns_alt_names)
-
-  if $certname == $bsl_puppet::config::puppetmaster_fqdn {
-    $set_dns_alt_names = $_dns_alt_names
-  }
-  else {
-    $set_dns_alt_names = concat($_dns_alt_names, $bsl_puppet::config::puppetmaster_fqdn)
-  }
-
+  $set_dns_alt_names = concat($dns_alt_names, $bsl_puppet::config::server_dns_alt_names)
   $unique_dns_alts = unique($set_dns_alt_names)
 
-  if ! str2bool($bsl_puppet::config::manage_hostname) {
-    host { $bsl_puppet::config::server_hostname:
-      ip           => '127.0.0.1',
-      host_aliases => delete($unique_dns_alts, $bsl_puppet::config::server_hostname),
-    }
+  host { $bsl_puppet::config::server_certname:
+    ip           => '127.0.0.1',
+    host_aliases => delete($unique_dns_alts, $bsl_puppet::config::server_certname),
   }
 
   $manage_packages = str2bool($bsl_puppet::config::manage_packages) ? {
