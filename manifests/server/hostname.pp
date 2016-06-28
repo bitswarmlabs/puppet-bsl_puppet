@@ -8,8 +8,13 @@ class bsl_puppet::server::hostname(
 
   include 'bsl_puppet::config'
 
-  $set_fqdn = "${hostname}.${domain}"
-
+  if empty($domain) {
+    $set_fqdn = "${hostname}"
+  }
+  else {
+    $set_fqdn = "${hostname}.${domain}"
+  }
+  
   if $set_fqdn != $::fqdn {
     notify { "## bsl_puppet::server::hostname changing hostname to ${set_fqdn}": }
     class { '::hostname':
@@ -19,5 +24,10 @@ class bsl_puppet::server::hostname(
   }
   else {
     notify { "## bsl_puppet::server::hostname not changing hostname to ${set_fqdn} (fqdn=${::fqdn}": }
+
+    host { $set_fqdn:
+      ip           => '127.0.0.1',
+      host_aliases => delete($unique_dns_alts, $set_fqdn),
+    }
   }
 }
