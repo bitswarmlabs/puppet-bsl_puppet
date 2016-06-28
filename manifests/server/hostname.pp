@@ -23,6 +23,8 @@ class bsl_puppet::server::hostname(
   }
 
   # Write hostname to config
+  anchor { 'bsl_puppet::server::hostname::begin': }
+  ->
   file { "/etc/hostname":
     ensure  => present,
     owner   => 'root',
@@ -31,12 +33,15 @@ class bsl_puppet::server::hostname(
     content => "$set_fqdn\n",
     notify  => Exec["bsl_apply_hostname"],
   }
+  ->
 
   # Set the hostname
   exec { "bsl_apply_hostname":
     command => "/bin/hostname -F /etc/hostname",
     unless  => "/usr/bin/test `hostname` = `/bin/cat /etc/hostname`",
   }
+  ->
+  Anchor['bsl_puppet::server::hostname::end']
 
   # Make sure the hosts file has an entry
   host { 'default hostname v4':
@@ -54,6 +59,8 @@ class bsl_puppet::server::hostname(
   #    host_aliases => $hostname,
   #    ip           => '::1',
   #  }
+
+  anchor { 'bsl_puppet::server::hostname::end': }
 
   # Optional Reloads. We iterate over the array and then for each provided
   # service, we setup a notification relationship with the change hostname
