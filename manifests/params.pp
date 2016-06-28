@@ -56,16 +56,16 @@ class bsl_puppet::params {
   $hiera_datadir = '/etc/puppetlabs/code'
   $hiera_backends = [ 'yaml' ]
   $hiera_hierarchy = [
-    'infrastructure/%{environment}/hieradata/common',
-    'infrastructure/%{environment}/hieradata/nodes/%{trusted.certname}',
+    'infrastructure/%{server.environment}/hieradata/common',
+    'infrastructure/%{server.environment}/hieradata/nodes/%{trusted.certname}',
     'environments/core/hieradata/common',
     'environments/core/hieradata/nodes/%{trusted.certname}',
-    "environments/${::environment}/hieradata/nodes/%{trusted.certname}",
-    "environments/${::environment}/hieradata/%{ec2_tag_profile}",
-    "environments/${::environment}/hieradata/%{ec2_tag_role}",
-    "environments/${::environment}/hieradata/%{ec2_tag_environment}",
-    "infrastructure/${::environment}/hieradata/bootstrap/%{app_project}",
-    "infrastructure/${::environment}/hieradata/defaults",
+    'environments/%{environment}/hieradata/nodes/%{trusted.certname}',
+    'environments/%{environment}/hieradata/%{ec2_tag_profile}',
+    'environments/%{environment}/hieradata/%{ec2_tag_role}',
+    'environments/%{environment}/hieradata/%{ec2_tag_environment}',
+    'infrastructure/%{server.environment}/hieradata/bootstrap/%{app_project}',
+    'infrastructure/%{server.environment}/hieradata/defaults',
     'environments/core/hieradata/bootstrap/%{app_project}',
     'environments/core/hieradata/defaults',
   ]
