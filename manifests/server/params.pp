@@ -1,11 +1,13 @@
 class bsl_puppet::server::params {
-  $certname = $::clientcert
+  include 'bsl_puppet::config'
+
+  $certname = $bsl_puppet::config::server_certname
 
   # Define the hostnamr (without domain) to be used.
-  $hostname = $::hostname
+  $hostname = $bsl_puppet::config::server_hostname
 
   # Define the domain to be used
-  $domain = undef
+  $domain = $bsl_puppet::config::server_domain
 
   # Array of Puppet service names to be reloaded after hostname change.
   # Generally you will need to at least restart syslog (or variant).
