@@ -22,7 +22,6 @@ class bsl_puppet::params {
 
   $server_hostname = hiera('hostname', 'puppet')
   $server_domain = hiera('domain', $::domain)
-  $server_certname = 'puppetmaster'
   $server_external_fqdn = hiera('external_fqdn', $::fqdn)
   $server_external_nodes = ''
 
@@ -34,6 +33,8 @@ class bsl_puppet::params {
   else {
     $server_fqdn = "${server_hostname}.${server_domain}"
   }
+
+  $server_certname = $server_fqdn
 
   $server_dns_alt_names = unique([ $server_hostname, $server_certname, $server_fqdn, $::fqdn ])
 
@@ -72,7 +73,7 @@ class bsl_puppet::params {
 
   $hiera_config_path = '/etc/puppetlabs/code/hiera.yaml'
   $hiera_logger = 'puppet'
-  $hiera_merge_behavior = 'native'
+  $hiera_merge_behavior = 'n'
   $hiera_datadir = '/etc/puppetlabs/code'
   $hiera_backends = [ 'yaml' ]
   $hiera_hierarchy = [
