@@ -11,5 +11,5 @@ class bsl_puppet::server::params {
 
   # Array of Puppet service names to be reloaded after hostname change.
   # Generally you will need to at least restart syslog (or variant).
-  $reloads = ['puppetserver']
+  $reloads = ['puppetserver','puppet']
 }
