@@ -9,8 +9,8 @@ class bsl_puppet::server::facter {
     ensure => directory,
   }
 
-  $app_project = bsl_puppet::config::app_project
-  $app_environment = bsl_puppet::config::app_environment
+  $app_project = $bsl_puppet::config::app_project
+  $app_environment = $bsl_puppet::config::app_environment
 
   file { '/opt/puppetlabs/facter/facts.d/bitswarmlabs.yaml':
     ensure => file,
