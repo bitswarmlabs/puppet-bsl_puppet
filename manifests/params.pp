@@ -21,7 +21,7 @@ class bsl_puppet::params {
   $app_environment = $server_environment
 
   $server_hostname = hiera('hostname', 'puppet')
-  $server_domain = hiera('domain', $::domain)
+  $server_domain = hiera('domain', 'local')
   $server_external_fqdn = hiera('external_fqdn', $::fqdn)
   $server_external_nodes = ''
 
