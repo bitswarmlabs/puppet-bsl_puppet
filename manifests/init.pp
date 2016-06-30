@@ -57,6 +57,7 @@ class bsl_puppet(
   $manage_puppetboard         = $bsl_puppet::params::manage_puppetboard,
   $manage_r10k                = $bsl_puppet::params::manage_r10k,
   $manage_r10k_webhooks       = $bsl_puppet::params::manage_r10k_webhooks,
+  $manage_packages            = $bsl_puppet::params::manage_packages,
   $manage_dependencies        = $bsl_puppet::params::manage_dependencies,
 
   $puppetdb_database_host     = $bsl_puppet::params::puppetdb_database_host,
@@ -96,6 +97,7 @@ class bsl_puppet(
       manage_r10k                   => $manage_r10k,
       manage_r10k_webhooks          => $manage_r10k_webhooks,
       manage_puppetboard            => $manage_puppetboard,
+      manage_packages               => $manage_packages,
       manage_dependencies           => $manage_dependencies,
 
       puppetdb_database_host        => $puppetdb_database_host,

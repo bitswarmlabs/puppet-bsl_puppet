@@ -38,7 +38,7 @@ class bsl_puppet::params {
 
   $server_dns_alt_names = unique([ $server_hostname, $server_certname, $server_fqdn, $::fqdn ])
 
-  $manage_packages = 'false'
+  $manage_packages = 'true'
 
   $server_jvm_min_heap_size = '512M'
   $server_jvm_max_heap_size = '900M'
