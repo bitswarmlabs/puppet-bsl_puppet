@@ -1,6 +1,7 @@
 class bsl_puppet::server::puppetboard {
   assert_private("bsl_puppet::server::puppetboard is a private class")
 
+  anchor { 'bsl_puppet::server::puppetboard::begin': } ->
   notify { '## hello from bsl_puppet::server::puppetboard': }
 
   include 'bsl_puppet::config'
@@ -52,4 +53,8 @@ class bsl_puppet::server::puppetboard {
   file { "${::puppetboard::apache::vhost::basedir}/htpasswd":
     owner => $::apache::user,
   }
+
+  Anchor['bsl_puppet::server::puppetboard::begin']
+  -> Class['::apache']
+  ~> anchor { 'bsl_puppet::server::puppetboard::end': }
 }

@@ -83,6 +83,8 @@ class bsl_puppet(
   validate_re($config_via, [ '^declare', '^include', '^external' ])
   validate_re($manage_dependencies_via, [ '^declare', '^include', '^external' ])
 
+  anchor { 'bsl_puppet::begin': }
+
   if $config_via == 'declare' {
     class { 'bsl_puppet::config':
       server                        => $server,
@@ -145,29 +147,29 @@ class bsl_puppet(
   }
 
   if str2bool($server) or str2bool($bsl_puppet::config::server) {
-    include 'bsl_puppet::server'
-    include 'bsl_puppet::server::ssh_keys'
+    contain 'bsl_puppet::server'
+    contain 'bsl_puppet::server::ssh_keys'
 
     if str2bool($bsl_puppet::config::manage_hostname) {
-      include 'bsl_puppet::server::hostname'
+      contain 'bsl_puppet::server::hostname'
       Class['bsl_puppet::server::hostname']->Class['bsl_puppet::server']
     }
 
     if str2bool($bsl_puppet::config::manage_puppetdb) {
-      include 'bsl_puppet::server::puppetdb'
+      contain 'bsl_puppet::server::puppetdb'
     }
 
     if str2bool($bsl_puppet::config::manage_hiera) {
-      include 'bsl_puppet::server::hiera'
+      contain 'bsl_puppet::server::hiera'
     }
 
     if str2bool($bsl_puppet::config::manage_r10k) {
-      include 'bsl_puppet::server::r10k'
-      include 'bsl_puppet::server::r10k::envs'
-      include 'bsl_puppet::server::r10k::cleanup'
+      contain 'bsl_puppet::server::r10k'
+      contain 'bsl_puppet::server::r10k::envs'
+      contain 'bsl_puppet::server::r10k::cleanup'
 
       if str2bool($bsl_puppet::config::r10k_init_deploy_enabled) {
-        include 'bsl_puppet::server::r10k::deploy'
+        contain 'bsl_puppet::server::r10k::deploy'
       }
 
       Class['bsl_puppet::server::r10k']->
@@ -176,10 +178,12 @@ class bsl_puppet(
     }
 
     if str2bool($bsl_puppet::config::manage_puppetboard) {
-      include 'bsl_puppet::server::puppetboard'
+      contain 'bsl_puppet::server::puppetboard'
     }
   }
   else {
-    include 'bsl_puppet::agent'
+    contain 'bsl_puppet::agent'
   }
+
+  anchor { 'bsl_puppet::end': }
 }

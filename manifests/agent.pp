@@ -9,9 +9,16 @@ class bsl_puppet::agent {
   }
 
   if ! defined(Class['::puppet']) {
+    anchor { 'bsl_puppet::agent::begin': }
+    ->
     class { '::puppet':
-      server                      => false,
-      manage_packages             => $manage_packages,
+      agent           => str2bool($bsl_puppet::config::agent),
+      server          => false,
+      puppetmaster    => $bsl_puppet::config::puppetmaster_fqdn,
+      client_certname => $bsl_puppet::config::agent_certname,
+      manage_packages => $manage_packages,
     }
+    ->
+    anchor { 'bsl_puppet::agent::end': }
   }
 }

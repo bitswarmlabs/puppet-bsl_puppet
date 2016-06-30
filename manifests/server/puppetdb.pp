@@ -1,6 +1,7 @@
 class bsl_puppet::server::puppetdb {
   assert_private('bsl_puppet::server::puppetdb is a private class')
 
+  anchor { 'bsl_puppet::server::puppetdb::begin': } ->
   notify { '## hello from bsl_puppet::server::puppetdb': }
 
   include 'bsl_puppet::config'
@@ -22,6 +23,7 @@ class bsl_puppet::server::puppetdb {
     database_username   => $bsl_puppet::config::puppetdb_database_user,
     database_password   => $bsl_puppet::config::puppetdb_database_pass,
   }
+  ~> Anchor['bsl_puppet::server::puppetdb::end']
 
   exec { 'puppetdb-ssl-setup':
     command     => 'puppetdb ssl-setup -f',
@@ -29,6 +31,8 @@ class bsl_puppet::server::puppetdb {
     logoutput   => true,
     refreshonly => true,
   }
+  ~> Service['puppetdb']
+  -> anchor { 'bsl_puppet::server::puppetdb::end': }
 
-  Class['::puppet::config']~>Exec['puppetdb-ssl-setup']~>Service['puppetdb']
+
 }

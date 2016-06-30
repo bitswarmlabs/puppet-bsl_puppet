@@ -1,10 +1,21 @@
 class bsl_puppet::server(
-  $certname = $bsl_puppet::server::params::certname,
+  $certname = undef,
   $dns_alt_names = []
 ) inherits bsl_puppet::server::params {
   include 'bsl_puppet::config'
 
-  notify { '## hello from bsl_puppet::server': }
+
+  if $certname {
+    $server_certname = $certname
+    $client_certname = $certname
+  }
+  else {
+    $server_certname = $bsl_puppet::config::server_certname
+    $client_certname = $bsl_puppet::config::agent_certname
+  }
+
+  anchor { 'bsl_puppet::server::start': } ->
+  notify { '## hello from bsl_puppet::server': message => "server_certname: ${server_certname} client_certname: ${client_certname}"}
 
   $set_dns_alt_names = concat($dns_alt_names, $bsl_puppet::config::server_dns_alt_names)
   $unique_dns_alts = unique($set_dns_alt_names)
@@ -23,12 +34,14 @@ class bsl_puppet::server(
     $server_storeconfigs_backend = false
   }
 
+  Anchor['bsl_puppet::server::start'] ->
   class { '::puppet':
-    puppetmaster                  => $bsl_puppet::config::puppetmaster_fqdn,
-    client_certname               => $certname,
-    server_certname               => $certname,
-    dns_alt_names                 => $unique_dns_alts,
+    agent                         => str2bool($bsl_puppet::config::agent),
     server                        => true,
+    puppetmaster                  => $bsl_puppet::config::puppetmaster_fqdn,
+    client_certname               => $agent_certname,
+    server_certname               => $server_certname,
+    dns_alt_names                 => $unique_dns_alts,
     server_implementation         => 'puppetserver',
     server_directory_environments => true,
     server_dynamic_environments   => true, # since its managed by r10k
@@ -48,17 +61,16 @@ class bsl_puppet::server(
     # auth_template                 => 'bsl_puppet/auth.conf.erb',
     # nsauth_template               => 'bsl_puppet/namespaceauth.conf.erb'
   }
-
+  ~>
   file { "${::puppet::dir}/puppet.conf":
     ensure => file,
-    notify => [ Service['puppet'], Service['puppetserver'] ],
+    notify => [ Service['puppet'], Service['puppetserver'], Anchor['bsl_puppet::server::end'] ],
   }
 
   if str2bool($bsl_puppet::config::use_foreman) {
     ## Foreman
     # Include foreman components for the puppetmaster
     # ENC script, reporting script etc.
-    anchor { 'bsl_puppet::server::config_start': } ->
     Class['::puppet'] ->
     class { '::foreman::puppetmaster':
       foreman_url    => $::puppet::server_foreman_url,
@@ -72,7 +84,9 @@ class bsl_puppet::server(
       ssl_ca         => pick($::puppet::server_foreman_ssl_ca, $::puppet::server::ssl_ca_cert),
       ssl_cert       => pick($::puppet::server_foreman_ssl_cert, $::puppet::server::ssl_cert),
       ssl_key        => pick($::puppet::server_foreman_ssl_key, $::puppet::server::ssl_cert_key),
-    } ~>
-    anchor { 'bsl_puppet::server::config_end': }
+    }
+    ~>Anchor['bsl_puppet::server::end']
   }
+
+  anchor { 'bsl_puppet::server::end': }
 }

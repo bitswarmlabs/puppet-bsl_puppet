@@ -6,6 +6,7 @@ class bsl_puppet::server::hostname(
 ) inherits bsl_puppet::server::params {
   assert_private("bsl_puppet::server::hostname is a private class")
 
+  anchor { 'bsl_puppet::server::hostname::begin': } ->
   notify { '## hello from bsl_puppet::server::hostname': }
 
   include 'bsl_puppet::config'
@@ -23,7 +24,7 @@ class bsl_puppet::server::hostname(
   }
 
   # Write hostname to config
-  anchor { 'bsl_puppet::server::hostname::begin': }
+  Anchor['bsl_puppet::server::hostname::begin']
   ->
   file { "/etc/hostname":
     ensure  => present,
@@ -33,14 +34,14 @@ class bsl_puppet::server::hostname(
     content => "$set_fqdn\n",
     notify  => Exec["bsl_apply_hostname"],
   }
-  ->
+  ~>
 
   # Set the hostname
   exec { "bsl_apply_hostname":
     command => "/bin/hostname -F /etc/hostname",
     unless  => "/usr/bin/test `hostname` = `/bin/cat /etc/hostname`",
   }
-  ->
+  ~>
   Anchor['bsl_puppet::server::hostname::end']
 
   # Make sure the hosts file has an entry
@@ -50,6 +51,7 @@ class bsl_puppet::server::hostname(
     host_aliases  => delete($unique_dns_alts, $bsl_puppet::config::server_certname),
     ip            => '127.0.0.1',
   }
+  ~>
 
   # TODO: This won't work yet thanks to an ancient puppet bug:
   # https://projects.puppetlabs.com/issues/8940
