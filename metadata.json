@@ -8,7 +8,6 @@
   "project_page": "http://bitswarm.io",
   "issues_url": "http://bitswarm.io",
   "dependencies": [
-    {"name":"bitswarmlabs-bsl_account","version_requirement":">= 0.1.0"},
     {"name":"abrader/gms", "version_requirement":">= 1.0.2"},
     {"name":"herculesteam/augeasproviders_core", "version_requirement":">= 2.1.2"},
     {"name":"herculesteam/augeasproviders_ssh", "version_requirement":">= 2.5.0"},
