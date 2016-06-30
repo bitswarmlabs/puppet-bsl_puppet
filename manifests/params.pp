@@ -22,8 +22,6 @@ class bsl_puppet::params {
 
   $server_hostname = hiera('hostname', 'puppet')
   $server_domain = hiera('domain', 'local')
-  $server_external_fqdn = hiera('external_fqdn', $::fqdn)
-  $server_external_nodes = ''
 
   # Generate hostname
   if empty($server_domain) {
@@ -37,6 +35,9 @@ class bsl_puppet::params {
   $server_certname = $server_fqdn
 
   $server_dns_alt_names = unique([ $server_hostname, $server_certname, $server_fqdn, $::fqdn ])
+
+  $server_external_fqdn = hiera('external_fqdn', $server_fqdn)
+  $server_external_nodes = ''
 
   $manage_packages = 'true'
 
@@ -107,15 +108,15 @@ class bsl_puppet::params {
   $r10k_init_deploy_enabled = 'false'
   $r10k_cache_dir = "${puppetserver_home}/r10k"
   $r10k_config_file = '/etc/puppetlabs/r10k/r10k.yaml'
-  $r10k_webhook_callback_fqdn = hiera('external_fqdn', $::fqdn)
+  $r10k_webhook_callback_fqdn = hiera('external_fqdn', $server_fqdn)
   $r10k_webhook_callback_port = '8088'
   $r10k_webhook_enable_ssl = 'false'
   $r10k_webhook_user = $default_admin_acct_name
   $r10k_webhook_pass = $default_admin_acct_pass
-  $r10k_github_api_token = hiera('github_api_token', '')
+  $r10k_github_api_token = hiera('github_api_token', false)
   $r10k_use_mcollective = 'false'
 
-  $puppetboard_fqdn = hiera('external_fqdn', $::fqdn)
+  $puppetboard_fqdn = hiera('external_fqdn', $server_fqdn)
   $puppetboard_port = '80'
   $puppetboard_user = $default_admin_acct_name
   $puppetboard_pass = $default_admin_acct_pass
