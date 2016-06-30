@@ -1,6 +1,8 @@
 class bsl_puppet::server::facter {
   notify { '## hello from bsl_puppet::server::facter': }
 
+  include 'bsl_puppet::config'
+
   file { ['/etc/facter', '/opt/puppetlabs/facter', '/etc/puppetlabs/facter']:
     ensure => directory,
   }
