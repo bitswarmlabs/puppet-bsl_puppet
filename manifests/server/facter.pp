@@ -1,4 +1,4 @@
-class bsl_puppet::server::facter {
+class bsl_puppet::server::facter() {
   notify { '## hello from bsl_puppet::server::facter': }
 
   include 'bsl_puppet::config'
@@ -14,9 +14,9 @@ class bsl_puppet::server::facter {
   $app_project = $bsl_puppet::config::app_project
   $app_environment = $bsl_puppet::config::app_environment
 
-  file { '/opt/puppetlabs/facter/facts.d/bitswarmlabs.yaml':
+  file { '/etc/facter/facts.d/bitswarmlabs.yaml':
     ensure => file,
     content => template("bsl_puppet/bitswarmlabs-facts.yaml.erb"),
-    require => File['/opt/puppetlabs/facter/facts.d']
+    require => File['/etc/facter/facts.d']
   }
 }
