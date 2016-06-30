@@ -64,7 +64,7 @@ class bsl_puppet::server(
   ~>
   file { "${::puppet::dir}/puppet.conf":
     ensure => file,
-    notify => [ Service['puppet'], Service['puppetserver'], Anchor['bsl_puppet::server::end'] ],
+    notify => [ Service['puppet'], Service['puppetserver'] ],
   }
 
   if str2bool($bsl_puppet::config::use_foreman) {
