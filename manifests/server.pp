@@ -4,17 +4,17 @@ class bsl_puppet::server(
 ) inherits bsl_puppet::server::params {
   include 'bsl_puppet::config'
 
-  anchor { 'bsl_puppet::server::start': }
-  
+
   if $certname {
-    $server_certname = $bsl_puppet::config::server_certname
-    $client_certname = $bsl_puppet::config::client_certname
+    $server_certname = $certname
+    $client_certname = $certname
   }
   else {
     $server_certname = $bsl_puppet::config::server_certname
-    $client_certname = $bsl_puppet::config::client_certname
+    $client_certname = $bsl_puppet::config::agent_certname
   }
-  
+
+  anchor { 'bsl_puppet::server::start': } ->
   notify { '## hello from bsl_puppet::server': message => "server_certname: ${server_certname} client_certname: ${client_certname}"}
 
   $set_dns_alt_names = concat($dns_alt_names, $bsl_puppet::config::server_dns_alt_names)
@@ -36,11 +36,12 @@ class bsl_puppet::server(
 
   Anchor['bsl_puppet::server::start'] ->
   class { '::puppet':
-    puppetmaster                  => $bsl_puppet::config::puppetmaster_fqdn,
-    client_certname               => $server_certname,
-    server_certname               => $client_certname,
-    dns_alt_names                 => $unique_dns_alts,
+    agent                         => str2bool($bsl_puppet::config::agent),
     server                        => true,
+    puppetmaster                  => $bsl_puppet::config::puppetmaster_fqdn,
+    client_certname               => $agent_certname,
+    server_certname               => $server_certname,
+    dns_alt_names                 => $unique_dns_alts,
     server_implementation         => 'puppetserver',
     server_directory_environments => true,
     server_dynamic_environments   => true, # since its managed by r10k
@@ -70,7 +71,7 @@ class bsl_puppet::server(
     ## Foreman
     # Include foreman components for the puppetmaster
     # ENC script, reporting script etc.
-    Anchor['bsl_puppet::server::start'] -> Class['::puppet'] ->
+    Class['::puppet'] ->
     class { '::foreman::puppetmaster':
       foreman_url    => $::puppet::server_foreman_url,
       receive_facts  => $::puppet::server_facts,

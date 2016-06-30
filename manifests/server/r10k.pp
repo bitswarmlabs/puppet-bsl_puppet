@@ -1,9 +1,11 @@
 class bsl_puppet::server::r10k {
   assert_private("bsl_puppet::server::r10k is a private class")
 
-  notify { '## hello from bsl_puppet::server::r10k': }
-
   include 'bsl_puppet::config'
+
+  anchor { 'bsl_puppet::server::r10k::begin': }->
+  notify { '## hello from bsl_puppet::server::r10k': message => $r10k_sources }
+
 
   if !empty($bsl_puppet::config::r10k_sources) {
     $r10k_sources = $bsl_puppet::config::r10k_sources.map|$key, $value| {
@@ -27,6 +29,7 @@ class bsl_puppet::server::r10k {
     $r10k_sources = []
   }
 
+
   if !empty($r10k_sources) {
     class { '::r10k':
       manage_modulepath         => false,
@@ -47,7 +50,8 @@ class bsl_puppet::server::r10k {
     exec { 'r10k gem install':
       command => '/opt/puppetlabs/puppet/bin/gem install r10k',
       creates => '/opt/puppetlabs/puppet/bin/r10k',
-      path    => '/opt/puppetlabs/puppet/bin:/opt/puppetlabs/bin:/usr/bin:/bin'
+      path    => '/opt/puppetlabs/puppet/bin:/opt/puppetlabs/bin:/usr/bin:/bin',
+      notify  => Anchor['bsl_puppet::server::r10k::end'],
     }
     ->
     file { '/usr/bin/r10k':
@@ -66,9 +70,12 @@ class bsl_puppet::server::r10k {
 
   if !empty($bsl_puppet::config::r10k_sources) {
     $defaults = {
-      'manage_webhook'   => $bsl_puppet::config::manage_r10k_webhooks,
+      'manage_webhook' => $bsl_puppet::config::manage_r10k_webhooks,
+      'notify' => Anchor['bsl_puppet::server::r10k::end'],
     }
 
     create_resources('bsl_puppet::server::r10k::source', $bsl_puppet::config::r10k_sources, $defaults)
   }
+
+  anchor { 'bsl_puppet::server::r10k::end': }
 }

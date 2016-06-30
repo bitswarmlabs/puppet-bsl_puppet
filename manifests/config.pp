@@ -51,6 +51,9 @@ class bsl_puppet::config(
   $app_project                    = $bsl_puppet::params::app_project,
   $app_environment                = $bsl_puppet::params::app_environment,
 
+  $agent                          = $bsl_puppet::params::agent,
+  $agent_certname                 = $bsl_puppet::params::agent_certname,
+
   $server                         = $bsl_puppet::params::server,
   $server_environment             = $bsl_puppet::params::server_environment,
   $server_hostname                = $bsl_puppet::params::server_hostname,
