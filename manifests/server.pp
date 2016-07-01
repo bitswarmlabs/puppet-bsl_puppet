@@ -39,7 +39,7 @@ class bsl_puppet::server(
     agent                         => str2bool($bsl_puppet::config::agent),
     server                        => true,
     puppetmaster                  => $bsl_puppet::config::puppetmaster_fqdn,
-    client_certname               => $agent_certname,
+    client_certname               => $client_certname,
     server_certname               => $server_certname,
     dns_alt_names                 => $unique_dns_alts,
     server_implementation         => 'puppetserver',
