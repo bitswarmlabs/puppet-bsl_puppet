@@ -44,8 +44,8 @@ class bsl_puppet::params {
 
   $manage_packages = 'true'
 
-  $server_jvm_min_heap_size = '512M'
-  $server_jvm_max_heap_size = '900M'
+  $server_jvm_min_heap_size = hiera('jvm_min_heap_size', '512M')
+  $server_jvm_max_heap_size = hiera('jvm_max_heap_size', '900M')
 
   $confdir = '/etc/puppetlabs/puppet'
   $puppetserver_home = '/opt/puppetlabs/server/data/puppetserver'
