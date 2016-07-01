@@ -4,7 +4,7 @@ class bsl_puppet::server::r10k {
   include 'bsl_puppet::config'
 
   anchor { 'bsl_puppet::server::r10k::begin': }->
-  notify { '## hello from bsl_puppet::server::r10k': message => $r10k_sources }
+  notify { '## hello from bsl_puppet::server::r10k': message => $bsl_puppet::config::r10k_sources }
 
 
   if !empty($bsl_puppet::config::r10k_sources) {
