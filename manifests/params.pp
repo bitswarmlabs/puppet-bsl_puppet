@@ -42,6 +42,8 @@ class bsl_puppet::params {
   $server_external_fqdn = hiera('external_fqdn', $server_fqdn)
   $server_external_nodes = ''
 
+  $server_autosigns = ["*.${server_domain}", "*.local"]
+
   $manage_packages = 'true'
 
   $server_jvm_min_heap_size = hiera('jvm_min_heap_size', '512M')
