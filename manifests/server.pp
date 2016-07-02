@@ -68,8 +68,9 @@ class bsl_puppet::server(
   }
 
   $autosigns = $::bsl_puppet::config::server_autosigns
+  notify { "autosigns": message => inline_template('<%= @autosigns.join("\n") %>') }
   
-  File <| name == "${::puppet::autosign}" |> {
+  File <| title == "${::puppet::autosign}" |> {
     content => inline_template('<%= @autosigns.join("\n") %>'),
     notify  => Service['puppetserver'],
   }
