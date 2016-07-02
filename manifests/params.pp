@@ -42,7 +42,7 @@ class bsl_puppet::params {
   $server_external_fqdn = hiera('external_fqdn', $server_fqdn)
   $server_external_nodes = ''
 
-  $server_autosigns = ["*.${server_domain}", "*.local"]
+  $server_autosigns = ["*.${server_domain}", "*.internal"]
 
   $manage_packages = 'true'
 
