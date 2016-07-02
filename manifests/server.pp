@@ -15,7 +15,7 @@ class bsl_puppet::server(
   }
 
   anchor { 'bsl_puppet::server::start': } ->
-  notify { '## hello from bsl_puppet::server': message => "server_certname: ${server_certname} client_certname: ${client_certname}"}
+  notify { '## hello from bsl_puppet::server': message => "server_certname: ${server_certname} client_certname: ${client_certname}" }
 
   $set_dns_alt_names = concat($dns_alt_names, $bsl_puppet::config::server_dns_alt_names)
   $unique_dns_alts = unique($set_dns_alt_names)
@@ -65,6 +65,14 @@ class bsl_puppet::server(
   file { "${::puppet::dir}/puppet.conf":
     ensure => file,
     notify => [ Service['puppet'], Service['puppetserver'] ],
+  }
+
+  $autosigns = $::bsl_puppet::config::server_autosigns
+  notify { "autosigns": message => inline_template('<%= @autosigns.join("\n") %>') }
+
+  File <| title == "${::puppet::autosign}" |> {
+    content => inline_template('<%= @autosigns.join("\n") %>'),
+    notify  => Service['puppetserver'],
   }
 
   if str2bool($bsl_puppet::config::use_foreman) {
