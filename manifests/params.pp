@@ -34,8 +34,8 @@ class bsl_puppet::params {
   }
 
   $server_certname = $server_fqdn
-  $agent_certname = $::clientcert
-  $client_certname = $::clientcert
+  $agent_certname = $::trusted['clientcert']
+  $client_certname = $::trusted['clientcert']
 
   $server_dns_alt_names = unique([ $server_hostname, $server_certname, $server_fqdn, $::fqdn ])
 
