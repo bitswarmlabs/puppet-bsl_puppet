@@ -84,7 +84,7 @@ class bsl_puppet::params {
   $server_aws_default_region = hiera('aws_default_region', 'us-east-1')
 
   $hiera_config_path = '/etc/puppetlabs/code/hiera.yaml'
-  $hiera_logger = 'puppet'
+  $hiera_logger = 'console'
   $hiera_merge_behavior = 'deeper'
   $hiera_datadir = '/etc/puppetlabs/code'
   $hiera_backends = [ 'yaml' ]
