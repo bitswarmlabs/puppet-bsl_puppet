@@ -84,17 +84,35 @@ class bsl_puppet::params {
   $server_aws_default_region = hiera('aws_default_region', 'us-east-1')
 
   $hiera_config_path = '/etc/puppetlabs/code/hiera.yaml'
-  $hiera_logger = 'puppet'
+  $hiera_logger = 'console'
   $hiera_merge_behavior = 'deeper'
   $hiera_datadir = '/etc/puppetlabs/code'
   $hiera_backends = [ 'yaml' ]
   $hiera_hierarchy = [
-    "private/${server_environment}/hieradata/common",
+    "private/${server_environment}/hieradata/global",
     "private/${server_environment}/hieradata/nodes/%{::trusted.certname}",
-    'environments/core/hieradata/common',
+    'private/%{::server_facts.environment}/hieradata/iam/%{::iam_profile_name}',
+    'private/%{::server_facts.environment}/hieradata/iam/%{::iam_profile_name}/%{::trusted.certname}',
+    'private/%{::server_facts.environment}/hieradata/iam/%{::iam_profile_name}/%{::ec2_tag_profile}',
+    'private/%{::server_facts.environment}/hieradata/iam/%{::iam_profile_name}/%{::ec2_tag_role}',
+    'private/%{::server_facts.environment}/hieradata/iam/%{::iam_profile_name}/%{::ec2_tag_environment}',
+    'environments/core/hieradata/iam/%{::iam_profile_name}/defaults',
+    'environments/core/hieradata/global',
     'environments/core/hieradata/nodes/%{::trusted.certname}',
-    'environments/%{::environment}/hieradata/common',
+    'environments/core/hieradata/iam/%{::iam_profile_name}',
+    'environments/core/hieradata/iam/%{::iam_profile_name}/%{::trusted.certname}',
+    'environments/core/hieradata/iam/%{::iam_profile_name}/%{::ec2_tag_profile}',
+    'environments/core/hieradata/iam/%{::iam_profile_name}/%{::ec2_tag_role}',
+    'environments/core/hieradata/iam/%{::iam_profile_name}/%{::ec2_tag_environment}',
+    'environments/core/hieradata/iam/%{::iam_profile_name}/defaults',
+    'environments/%{::environment}/hieradata/global',
     'environments/%{::environment}/hieradata/nodes/%{::trusted.certname}',
+    'environments/%{::environment}/hieradata/iam/%{::iam_profile_name}',
+    'environments/%{::environment}/hieradata/iam/%{::iam_profile_name}/%{::trusted.certname}',
+    'environments/%{::environment}/hieradata/iam/%{::iam_profile_name}/%{::ec2_tag_profile}',
+    'environments/%{::environment}/hieradata/iam/%{::iam_profile_name}/%{::ec2_tag_role}',
+    'environments/%{::environment}/hieradata/iam/%{::iam_profile_name}/%{::ec2_tag_environment}',
+    'environments/%{::environment}/hieradata/iam/%{::iam_profile_name}/defaults',
     'environments/%{::environment}/hieradata/%{::ec2_tag_profile}',
     'environments/%{::environment}/hieradata/%{::ec2_tag_role}',
     'environments/%{::environment}/hieradata/%{::ec2_tag_environment}',
@@ -117,10 +135,10 @@ class bsl_puppet::params {
 
   $r10k_sources = {
     public => {
-      remote => 'https://github.com/bitswarmlabs/puppetmaster-envs.git',
-      basedir => "/etc/puppetlabs/code/environments",
-      provider => 'github',
-      project => 'bitswarmlabs/puppetmaster-envs',
+      remote            => 'https://github.com/bitswarmlabs/puppetmaster-envs.git',
+      basedir           => "/etc/puppetlabs/code/environments",
+      provider          => 'github',
+      project           => 'bitswarmlabs/puppetmaster-envs',
       manage_deploy_key => false,
     }
   }
@@ -135,6 +153,7 @@ class bsl_puppet::params {
   $r10k_webhook_pass = $default_admin_acct_pass
   $r10k_github_api_token = hiera('github_api_token', false)
   $r10k_use_mcollective = 'false'
+  $r10k_postrun = ['/bin/chown', '-R', 'puppet:puppet', '/etc/puppetlabs/code']
 
   $puppetboard_fqdn = hiera('external_fqdn', $server_fqdn)
   $puppetboard_port = '80'

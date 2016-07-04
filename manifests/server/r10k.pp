@@ -37,6 +37,7 @@ class bsl_puppet::server::r10k {
       configfile                => $bsl_puppet::config::r10k_config_file,
       manage_configfile_symlink => false,
       sources                   => hash($r10k_sources),
+      postrun                   => $bsl_puppet::config::r10k_postrun,
       provider                  => 'puppet_gem',
       require                   => Class['bsl_puppet::server'],
       notify                    => File['/etc/r10k.yaml'],

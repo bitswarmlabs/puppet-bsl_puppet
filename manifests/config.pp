@@ -68,7 +68,8 @@ class bsl_puppet::config(
   $server_private_code_path       = $bsl_puppet::params::server_private_code_path,
   $server_aws_api_key             = $bsl_puppet::params::server_aws_api_key,
   $server_aws_api_secret          = $bsl_puppet::params::server_aws_api_secret,
-
+  $server_aws_default_region      = $bsl_puppet::params::server_aws_default_region,
+  
   $manage_hiera                   = $bsl_puppet::params::manage_hiera,
   $manage_puppetdb                = $bsl_puppet::params::manage_puppetdb,
   $manage_hostname                = $bsl_puppet::params::manage_hostname,
@@ -99,6 +100,7 @@ class bsl_puppet::config(
   $r10k_webhook_pass              = $bsl_puppet::params::r10k_webhook_pass,
   $r10k_github_api_token          = $bsl_puppet::params::r10k_github_api_token,
   $r10k_use_mcollective           = $bsl_puppet::params::r10k_use_mcollective,
+  $r10k_postrun                   = $bsl_puppet::params::r10k_postrun,
 
   $puppetboard_user               = $bsl_puppet::params::puppetboard_user,
   $puppetboard_pass               = $bsl_puppet::params::puppetboard_pass,
