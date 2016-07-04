@@ -77,7 +77,7 @@ class bsl_puppet::params {
     "/etc/puppetlabs/code/environments/core/dist",
   ]
 
-  $server_private_code_path = "/etc/puppetlabs/code/private/${server_environment}"
+  $server_private_code_path = "/etc/puppetlabs/code/private"
 
   $server_aws_api_key = hiera('aws_api_key', undef)
   $server_aws_api_secret = hiera('aws_api_secret', undef)
