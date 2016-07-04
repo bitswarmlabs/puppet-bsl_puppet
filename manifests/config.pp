@@ -66,6 +66,8 @@ class bsl_puppet::config(
   $server_dns_alt_names           = $bsl_puppet::params::server_dns_alt_names,
   $server_autosigns               = $bsl_puppet::params::server_autosigns,
   $server_private_code_path       = $bsl_puppet::params::server_private_code_path,
+  $server_aws_api_key             = $bsl_puppet::params::server_aws_api_key,
+  $server_aws_api_secret          = $bsl_puppet::params::server_aws_api_secret,
 
   $manage_hiera                   = $bsl_puppet::params::manage_hiera,
   $manage_puppetdb                = $bsl_puppet::params::manage_puppetdb,

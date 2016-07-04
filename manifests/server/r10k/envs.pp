@@ -18,7 +18,7 @@ class bsl_puppet::server::r10k::envs {
   file { "${bsl_puppet::config::server_private_code_path}/hieradata/nodes/${bsl_puppet::config::server_certname}.yaml":
     ensure => file,
     replace => false,
-    source => '/etc/puppetlabs/code/bsl_puppet/hieradata/puppetmaster.yaml'
+    content => template('bsl_puppet/server/puppetmaster-hieradata.yaml.erb')
   }
 
   bsl_puppet::server::r10k::deploy::post::env { $::puppet::server_environments: }

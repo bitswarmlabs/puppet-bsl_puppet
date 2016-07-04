@@ -79,6 +79,10 @@ class bsl_puppet::params {
 
   $server_private_code_path = "/etc/puppetlabs/code/private/${server_environment}"
 
+  $server_aws_api_key = hiera('aws_api_key', undef)
+  $server_aws_api_secret = hiera('aws_api_secret', undef)
+  $server_aws_default_region = hiera('aws_default_region', 'us-east-1')
+
   $hiera_config_path = '/etc/puppetlabs/code/hiera.yaml'
   $hiera_logger = 'puppet'
   $hiera_merge_behavior = 'deeper'
