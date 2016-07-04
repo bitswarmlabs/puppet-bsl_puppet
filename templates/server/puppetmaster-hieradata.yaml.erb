@@ -10,18 +10,18 @@ default_admin_acct_pass: '<%= scope.lookupvar('bsl_puppet::config::default_admin
 github_api_token: '<%= scope.lookupvar('bsl_puppet::config::r10k_github_api_token') %>'
 <%- end -%>
 
-<%- if scope.lookupvar('bsl_puppet::config::r10k_webhook_user') != scope.lookupvar('bsl_puppet::config::default_admin_acct_user') -%>
+<%- if scope.lookupvar('bsl_puppet::config::r10k_webhook_user') != scope.lookupvar('bsl_puppet::config::default_admin_acct_name') -%>
 bsl_puppet::config::r10k_webhook_user: '<%= scope.lookupvar('bsl_puppet::config::r10k_webhook_user') %>'
 <%- end -%>
 <%- if scope.lookupvar('bsl_puppet::config::r10k_webhook_pass') != scope.lookupvar('bsl_puppet::config::default_admin_acct_pass') -%>
 bsl_puppet::config::r10k_webhook_pass: '<%= scope.lookupvar('bsl_puppet::config::r10k_webhook_pass') %>'
 <%- end -%>
 
-<%- if scope.lookupvar('bsl_puppet::config::puppetboard_user') != scope.lookupvar('bsl_puppet::config::default_admin_acct_user') -%>
-bsl_puppet::config::r10k_webhook_user: '<%= scope.lookupvar('bsl_puppet::config::puppetboard_user') %>'
+<%- if scope.lookupvar('bsl_puppet::config::puppetboard_user') != scope.lookupvar('bsl_puppet::config::default_admin_acct_name') -%>
+bsl_puppet::config::puppetboard_user: '<%= scope.lookupvar('bsl_puppet::config::puppetboard_user') %>'
 <%- end -%>
 <%- if scope.lookupvar('bsl_puppet::config::puppetboard_pass') != scope.lookupvar('bsl_puppet::config::default_admin_acct_pass') -%>
-bsl_puppet::config::r10k_webhook_pass: '<%= scope.lookupvar('bsl_puppet::config::puppetboard_pass') %>'
+bsl_puppet::config::puppetboard_pass: '<%= scope.lookupvar('bsl_puppet::config::puppetboard_pass') %>'
 <%- end -%>
 
 <%- if scope.lookupvar('bsl_puppet::config::server_aws_api_key') -%>
