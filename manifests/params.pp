@@ -71,11 +71,13 @@ class bsl_puppet::params {
   ]
 
   $server_core_modules_path  = [
-    "/etc/puppetlabs/code/infrastructure/${server_environment}/modules",
-    "/etc/puppetlabs/code/infrastructure/${server_environment}/dist",
+    "/etc/puppetlabs/code/private/${server_environment}/modules",
+    "/etc/puppetlabs/code/private/${server_environment}/dist",
     "/etc/puppetlabs/code/environments/core/modules",
     "/etc/puppetlabs/code/environments/core/dist",
   ]
+
+  $server_private_code_path = "/etc/puppetlabs/code/private/${server_environment}"
 
   $hiera_config_path = '/etc/puppetlabs/code/hiera.yaml'
   $hiera_logger = 'puppet'
@@ -83,8 +85,8 @@ class bsl_puppet::params {
   $hiera_datadir = '/etc/puppetlabs/code'
   $hiera_backends = [ 'yaml' ]
   $hiera_hierarchy = [
-    "infrastructure/${server_environment}/hieradata/common",
-    "infrastructure/${server_environment}/hieradata/nodes/%{::trusted.certname}",
+    "private/${server_environment}/hieradata/common",
+    "private/${server_environment}/hieradata/nodes/%{::trusted.certname}",
     'environments/core/hieradata/common',
     'environments/core/hieradata/nodes/%{::trusted.certname}',
     'environments/%{::environment}/hieradata/common',
@@ -93,8 +95,8 @@ class bsl_puppet::params {
     'environments/%{::environment}/hieradata/%{::ec2_tag_role}',
     'environments/%{::environment}/hieradata/%{::ec2_tag_environment}',
     'environments/%{::environment}/hieradata/defaults',
-    "infrastructure/${server_environment}/hieradata/bootstrap/%{::app_project}",
-    "infrastructure/${server_environment}/hieradata/defaults",
+    "private/${server_environment}/hieradata/bootstrap/%{::app_project}",
+    "private/${server_environment}/hieradata/defaults",
     'environments/core/hieradata/bootstrap/%{::app_project}',
     'environments/core/hieradata/defaults',
   ]
@@ -109,7 +111,16 @@ class bsl_puppet::params {
   $puppetdb_soft_write_failure = 'false'
   $puppetdb_validate_connection = 'false'
 
-  $r10k_sources = undef
+  $r10k_sources = {
+    public => {
+      remote => 'https://github.com/bitswarmlabs/puppetmaster-envs.git',
+      basedir => "/etc/puppetlabs/code/environments",
+      provider => 'github',
+      project => 'bitswarmlabs/puppetmaster-envs',
+      manage_deploy_key => false,
+    }
+  }
+
   $r10k_init_deploy_enabled = 'false'
   $r10k_cache_dir = "${puppetserver_home}/r10k"
   $r10k_config_file = '/etc/puppetlabs/r10k/r10k.yaml'

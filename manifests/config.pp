@@ -65,6 +65,7 @@ class bsl_puppet::config(
   $server_jvm_max_heap_size       = $bsl_puppet::params::server_jvm_max_heap_size,
   $server_dns_alt_names           = $bsl_puppet::params::server_dns_alt_names,
   $server_autosigns               = $bsl_puppet::params::server_autosigns,
+  $server_private_code_path       = $bsl_puppet::params::server_private_code_path,
 
   $manage_hiera                   = $bsl_puppet::params::manage_hiera,
   $manage_puppetdb                = $bsl_puppet::params::manage_puppetdb,
