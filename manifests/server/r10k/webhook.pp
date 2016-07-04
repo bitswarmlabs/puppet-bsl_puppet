@@ -1,6 +1,6 @@
 class bsl_puppet::server::r10k::webhook(
-  $callback_fqdn = $bsl_puppet::server::r10k::params::webhook_callback_fqdn,
-  $callback_port = $bsl_puppet::server::r10k::params::webhook_callback_port,
+  $callback_fqdn = $bsl_puppet::config::r10k_webhook_callback_fqdn,
+  $callback_port = $bsl_puppet::config::r10k_webhook_callback_port,
   $enable_ssl = 'false',
 ) {
   assert_private("bsl_puppet::server::r10k::webhook is a private class")
