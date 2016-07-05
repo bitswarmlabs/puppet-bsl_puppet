@@ -153,6 +153,7 @@ class bsl_puppet::params {
   $r10k_webhook_pass = $default_admin_acct_pass
   $r10k_github_api_token = hiera('github_api_token', false)
   $r10k_use_mcollective = 'false'
+  $r10k_postrun = ['/bin/chmod', '-R', 'puppet:puppet', '/etc/puppetlabs/code']
 
   $puppetboard_fqdn = hiera('external_fqdn', $server_fqdn)
   $puppetboard_port = '80'

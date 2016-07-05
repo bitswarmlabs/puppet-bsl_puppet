@@ -100,6 +100,7 @@ class bsl_puppet::config(
   $r10k_webhook_pass              = $bsl_puppet::params::r10k_webhook_pass,
   $r10k_github_api_token          = $bsl_puppet::params::r10k_github_api_token,
   $r10k_use_mcollective           = $bsl_puppet::params::r10k_use_mcollective,
+  $r10k_postrun                   = $bsl_puppet::params::r10k_postrun,
 
   $puppetboard_user               = $bsl_puppet::params::puppetboard_user,
   $puppetboard_pass               = $bsl_puppet::params::puppetboard_pass,
