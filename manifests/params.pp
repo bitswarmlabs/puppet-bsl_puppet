@@ -89,7 +89,7 @@ class bsl_puppet::params {
   $hiera_datadir = '/etc/puppetlabs/code'
   $hiera_backends = [ 'yaml' ]
   $hiera_hierarchy = [
-    "private/${server_environment}/hieradata/common",
+    "private/${server_environment}/hieradata/global",
     "private/${server_environment}/hieradata/nodes/%{::trusted.certname}",
     'private/%{::server_facts.environment}/hieradata/iam/%{::iam_profile_name}',
     'private/%{::server_facts.environment}/hieradata/iam/%{::iam_profile_name}/%{::trusted.certname}',
@@ -97,7 +97,7 @@ class bsl_puppet::params {
     'private/%{::server_facts.environment}/hieradata/iam/%{::iam_profile_name}/%{::ec2_tag_role}',
     'private/%{::server_facts.environment}/hieradata/iam/%{::iam_profile_name}/%{::ec2_tag_environment}',
     'environments/core/hieradata/iam/%{::iam_profile_name}/defaults',
-    'environments/core/hieradata/common',
+    'environments/core/hieradata/global',
     'environments/core/hieradata/nodes/%{::trusted.certname}',
     'environments/core/hieradata/iam/%{::iam_profile_name}',
     'environments/core/hieradata/iam/%{::iam_profile_name}/%{::trusted.certname}',
@@ -105,7 +105,7 @@ class bsl_puppet::params {
     'environments/core/hieradata/iam/%{::iam_profile_name}/%{::ec2_tag_role}',
     'environments/core/hieradata/iam/%{::iam_profile_name}/%{::ec2_tag_environment}',
     'environments/core/hieradata/iam/%{::iam_profile_name}/defaults',
-    'environments/%{::environment}/hieradata/common',
+    'environments/%{::environment}/hieradata/global',
     'environments/%{::environment}/hieradata/nodes/%{::trusted.certname}',
     'environments/%{::environment}/hieradata/iam/%{::iam_profile_name}',
     'environments/%{::environment}/hieradata/iam/%{::iam_profile_name}/%{::trusted.certname}',
