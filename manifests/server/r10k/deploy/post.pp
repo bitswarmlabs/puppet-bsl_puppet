@@ -27,14 +27,11 @@ class bsl_puppet::server::r10k::deploy::post {
     mode    => '0644',
   }
 
-  # include 'bsl_puppet::server::r10k::cleanup'
   include 'bsl_puppet::server::r10k::envs'
 
   anchor { 'bsl_puppet::server::r10k::deploy::post_start': }
   ->
   Class['bsl_puppet::server::r10k::envs']
-  ->
-  Class['bsl_puppet::server::r10k::cleanup']
   ->
   anchor { 'bsl_puppet::server::r10k::deploy::post_end': }
 }

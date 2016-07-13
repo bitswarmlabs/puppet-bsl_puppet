@@ -166,15 +166,13 @@ class bsl_puppet(
     if str2bool($bsl_puppet::config::manage_r10k) {
       contain 'bsl_puppet::server::r10k'
       contain 'bsl_puppet::server::r10k::envs'
-      contain 'bsl_puppet::server::r10k::cleanup'
 
       if str2bool($bsl_puppet::config::r10k_init_deploy_enabled) {
         contain 'bsl_puppet::server::r10k::deploy'
       }
 
       Class['bsl_puppet::server::r10k']->
-      Class['bsl_puppet::server::r10k::envs']->
-      Class['bsl_puppet::server::r10k::cleanup']
+      Class['bsl_puppet::server::r10k::envs']
     }
 
     if str2bool($bsl_puppet::config::manage_puppetboard) {
