@@ -11,5 +11,6 @@ class bsl_puppet::server::hiera {
     logger         => $bsl_puppet::config::hiera_logger,
     merge_behavior => $bsl_puppet::config::hiera_merge_behavior,
     confdir        => $bsl_puppet::config::confdir,
+    master_service => 'puppetserver',
   }
 }
