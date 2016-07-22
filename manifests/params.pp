@@ -6,6 +6,10 @@ class bsl_puppet::params {
   $server = 'false'
   $agent = 'true'
 
+  $foreman = 'false'
+  $foreman_user = $default_admin_acct_name
+  $foreman_password = $default_admin_acct_pass
+
   $server_environment = empty($::ec2_tag_environment) ? {
     false => $::ec2_tag_environment,
     default => empty($::app_environment) ? {
@@ -37,10 +41,10 @@ class bsl_puppet::params {
   $agent_certname = $::clientcert
   $client_certname = $::clientcert
 
-  $server_dns_alt_names = unique([ $server_hostname, $server_certname, $server_fqdn, $::fqdn ])
-
   $server_external_fqdn = hiera('external_fqdn', $server_fqdn)
   $server_external_nodes = ''
+
+  $server_dns_alt_names = unique([ $server_hostname, $server_certname, $server_fqdn, $server_external_fqdn, $::fqdn ])
 
   $server_autosigns = ["*.${server_domain}", "*.internal"]
 
@@ -59,8 +63,6 @@ class bsl_puppet::params {
   $manage_r10k = 'true'
   $manage_r10k_webhooks = 'false'
   $manage_facts_d = 'false'
-
-  $use_foreman = 'false'
 
   # See bsl_puppet::server::r10k::deploy::post::env for where environment speciic module paths are set.
   $server_common_modules_path = [

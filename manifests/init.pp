@@ -51,6 +51,8 @@ class bsl_puppet(
   $server_domain              = $bsl_puppet::params::server_domain,
   $server_certname            = $bsl_puppet::params::server_certname,
 
+  $foreman                    = $bsl_puppet::params::foreman,
+
   $manage_hiera               = $bsl_puppet::params::manage_hiera,
   $manage_puppetdb            = $bsl_puppet::params::manage_puppetdb,
   $manage_hostname            = $bsl_puppet::params::manage_hostname,
@@ -92,6 +94,8 @@ class bsl_puppet(
       server_hostname               => $server_hostname,
       server_domain                 => $server_domain,
       server_certname               => $server_certname,
+
+      foreman                       => $foreman,
 
       manage_hostname               => $manage_hostname,
       manage_puppetdb               => $manage_puppetdb,

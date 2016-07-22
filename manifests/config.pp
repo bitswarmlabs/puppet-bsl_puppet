@@ -69,7 +69,11 @@ class bsl_puppet::config(
   $server_aws_api_key             = $bsl_puppet::params::server_aws_api_key,
   $server_aws_api_secret          = $bsl_puppet::params::server_aws_api_secret,
   $server_aws_default_region      = $bsl_puppet::params::server_aws_default_region,
-  
+
+  $foreman                        = $bsl_puppet::params::foreman,
+  $foreman_user                   = $bsl_puppet::params::foreman_user,
+  $foreman_password               = $bsl_puppet::params::foreman_password,
+
   $manage_hiera                   = $bsl_puppet::params::manage_hiera,
   $manage_puppetdb                = $bsl_puppet::params::manage_puppetdb,
   $manage_hostname                = $bsl_puppet::params::manage_hostname,
@@ -115,9 +119,7 @@ class bsl_puppet::config(
   $hiera_logger                   = $bsl_puppet::params::hiera_logger,
   $hiera_merge_behavior           = $bsl_puppet::params::hiera_merge_behavior,
 
-  $use_foreman                    = $bsl_puppet::params::use_foreman,
-
-  $ruby_gems_version            = 'present',
+  $ruby_gems_version              = 'present',
 ) inherits bsl_puppet::params {
   notify { '## hello from bsl_puppet::config': }
 
