@@ -6,8 +6,7 @@ class bsl_puppet::server::hostname(
 ) inherits bsl_puppet::server::params {
   assert_private("bsl_puppet::server::hostname is a private class")
 
-  anchor { 'bsl_puppet::server::hostname::begin': } ->
-  notify { '## hello from bsl_puppet::server::hostname': }
+  anchor { 'bsl_puppet::server::hostname::begin': }
 
   include 'bsl_puppet::config'
 

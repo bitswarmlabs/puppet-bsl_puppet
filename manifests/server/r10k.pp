@@ -3,9 +3,7 @@ class bsl_puppet::server::r10k {
 
   include 'bsl_puppet::config'
 
-  anchor { 'bsl_puppet::server::r10k::begin': }->
-  notify { '## hello from bsl_puppet::server::r10k': message => $bsl_puppet::config::r10k_sources }
-
+  anchor { 'bsl_puppet::server::r10k::begin': }
 
   if !empty($bsl_puppet::config::r10k_sources) {
     $r10k_sources = $bsl_puppet::config::r10k_sources.map|$key, $value| {
@@ -62,12 +60,12 @@ class bsl_puppet::server::r10k {
     }
   }
 
-  exec { 'r10k version':
-    command   => 'r10k version',
-    logoutput => true,
-    path      => '/usr/bin:/bin',
-    require   => File['/usr/bin/r10k']
-  }
+  # exec { 'r10k version':
+  #   command   => 'r10k version',
+  #   logoutput => true,
+  #   path      => '/usr/bin:/bin',
+  #   require   => File['/usr/bin/r10k']
+  # }
 
   if !empty($bsl_puppet::config::r10k_sources) {
     $defaults = {

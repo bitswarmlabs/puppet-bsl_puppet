@@ -1,8 +1,6 @@
 class bsl_puppet::server::hiera {
   include 'bsl_puppet::config'
 
-  notify { '## hello from bsl_puppet::server::hiera': }
-
   class { '::hiera':
     hiera_yaml     => $bsl_puppet::config::hiera_config_path,
     datadir        => $bsl_puppet::config::hiera_datadir,

@@ -5,8 +5,7 @@ class bsl_puppet::server::r10k::webhook(
 ) {
   assert_private("bsl_puppet::server::r10k::webhook is a private class")
 
-  anchor { 'bsl_puppet::server::r10k::webhook::begin': }->
-  notify { '## hello from bsl_puppet::server::r10k::webhook': }
+  anchor { 'bsl_puppet::server::r10k::webhook::begin': }
 
   include 'bsl_puppet::server::r10k'
 
@@ -43,6 +42,5 @@ class bsl_puppet::server::r10k::webhook(
 
   $webhook_base_url = "${webhook_proto}://${bsl_puppet::config::r10k_webhook_user}:${bsl_puppet::config::r10k_webhook_pass}@${bsl_puppet::config::r10k_webhook_callback_fqdn}:${bsl_puppet::config::r10k_webhook_callback_port}/"
 
-  notify { "## r10k webhook base_url: ${webhook_base_url}": }->
   anchor { 'bsl_puppet::server::r10k::webhook::end': }
 }

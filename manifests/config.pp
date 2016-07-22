@@ -119,10 +119,8 @@ class bsl_puppet::config(
   $hiera_logger                   = $bsl_puppet::params::hiera_logger,
   $hiera_merge_behavior           = $bsl_puppet::params::hiera_merge_behavior,
 
-  $ruby_gems_version              = 'present',
+  $ruby_gems_version              = 'latest',
 ) inherits bsl_puppet::params {
-  notify { '## hello from bsl_puppet::config': }
-
   if !empty($r10k_sources) {
     validate_hash($r10k_sources)
   }

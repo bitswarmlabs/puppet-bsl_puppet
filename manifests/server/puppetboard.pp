@@ -1,8 +1,7 @@
 class bsl_puppet::server::puppetboard {
   assert_private("bsl_puppet::server::puppetboard is a private class")
 
-  anchor { 'bsl_puppet::server::puppetboard::begin': } ->
-  notify { '## hello from bsl_puppet::server::puppetboard': }
+  anchor { 'bsl_puppet::server::puppetboard::begin': }
 
   include 'bsl_puppet::config'
 

@@ -13,8 +13,7 @@ class bsl_puppet::server(
     $client_certname = $bsl_puppet::config::agent_certname
   }
 
-  anchor { 'bsl_puppet::server::start': } ->
-  notify { '## hello from bsl_puppet::server': message => "server_certname: ${server_certname} client_certname: ${client_certname}" }
+  anchor { 'bsl_puppet::server::start': }
 
   $set_dns_alt_names = concat($dns_alt_names, $bsl_puppet::config::server_dns_alt_names)
   $unique_dns_alts = unique($set_dns_alt_names)
@@ -112,7 +111,6 @@ class bsl_puppet::server(
   }
 
   $autosigns = $::bsl_puppet::config::server_autosigns
-  notify { "autosigns": message => inline_template('<%= @autosigns.join("\n") %>') }
 
   File <| title == "${::puppet::autosign}" |> {
     content => inline_template('<%= @autosigns.join("\n") %>'),

@@ -183,5 +183,5 @@ class bsl_puppet::params {
   }
 
   $manage_dependencies = 'true'
-  $manage_dependencies_via = 'include'
+  $manage_dependencies_via = 'declare'
 }
