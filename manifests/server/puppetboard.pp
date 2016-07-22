@@ -19,7 +19,7 @@ class bsl_puppet::server::puppetboard {
   }
 
   class { '::puppetboard':
-    puppetdb_host => $bsl_puppet::config::puppetdb_host,
+    puppetdb_host     => $bsl_puppet::config::puppetdb_host,
   }
 
   class { '::puppetboard::apache::vhost':
@@ -40,7 +40,7 @@ class bsl_puppet::server::puppetboard {
     ],
   }
 
-  httpauth {  $bsl_puppet::config::puppetboard_user:
+  httpauth { $bsl_puppet::config::puppetboard_user:
     file      =>  "${::puppetboard::apache::vhost::basedir}/htpasswd",
     password  => $bsl_puppet::config::puppetboard_pass,
     realm     => 'puppetboard',

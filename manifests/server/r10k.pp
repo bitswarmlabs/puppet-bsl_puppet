@@ -39,6 +39,7 @@ class bsl_puppet::server::r10k {
       provider                  => 'puppet_gem',
       require                   => Class['bsl_puppet::server'],
       notify                    => File['/etc/r10k.yaml'],
+      manage_ruby_dependency    => 'include',
     }
   }
 
