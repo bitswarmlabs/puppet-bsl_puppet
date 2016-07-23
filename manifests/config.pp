@@ -126,4 +126,6 @@ class bsl_puppet::config(
   }
 
   validate_re($puppetboard_manage_apache_via, [ '^declare', '^include', '^external' ])
+
+  # notify { "puppetserver jvm_min_heap_size: ${server_jvm_min_heap_size}, jvm_max_heap_size: ${server_jvm_max_heap_size}": }
 }

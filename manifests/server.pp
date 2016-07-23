@@ -73,6 +73,8 @@ class bsl_puppet::server(
     class { '::foreman':
       admin_username => $bsl_puppet::config::foreman_user,
       admin_password => $bsl_puppet::config::foreman_password,
+      servername     => $bsl_puppet::config::server_fqdn,
+      serveraliases  => ['foreman', $bsl_puppet::config::server_external_fqdn]
     }
   }
   else {
