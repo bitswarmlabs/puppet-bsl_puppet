@@ -22,7 +22,7 @@ class bsl_puppet::server::r10k::webhook(
     # public_key_path  => '/etc/puppetlabs/puppet/ssl/ca/ca_pub.pem',
     # private_key_path => '/etc/puppetlabs/puppet/ssl/ca/ca_key.pem',
     protected        => true,
-    use_mcollective  => str2bool($bsl_puppet::config::r10k_se_mcollective),
+    use_mcollective  => str2bool($bsl_puppet::config::r10k_use_mcollective),
     user             => $bsl_puppet::config::r10k_webhook_user,
     pass             => $bsl_puppet::config::r10k_webhook_pass,
     notify           => Service['webhook'],
