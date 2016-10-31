@@ -14,6 +14,10 @@ class bsl_puppet::server::puppetdb {
   ~>
   Service['puppetserver']
 
+  if $bsl_puppet::config::manage_postgresql {
+    class { '::postgresql::server': before => Class['::puppetdb'] }
+  }
+
   class { '::puppetdb':
     database            => $bsl_puppet::config::puppetdb_database_type,
     database_host       => $bsl_puppet::config::puppetdb_database_host,

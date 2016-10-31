@@ -58,6 +58,7 @@ class bsl_puppet::params {
 
   $manage_hiera = 'true'
   $manage_puppetdb = 'true'
+  $manage_postgresql = 'true'
   $manage_hostname = 'true'
   $manage_puppetboard = 'false'
   $manage_r10k = 'true'

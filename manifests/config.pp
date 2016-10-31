@@ -76,6 +76,7 @@ class bsl_puppet::config(
 
   $manage_hiera                   = $bsl_puppet::params::manage_hiera,
   $manage_puppetdb                = $bsl_puppet::params::manage_puppetdb,
+  $manage_postgresql              = $bsl_puppet::params::manage_postgresql,
   $manage_hostname                = $bsl_puppet::params::manage_hostname,
   $manage_puppetboard             = $bsl_puppet::params::manage_puppetboard,
   $manage_r10k                    = $bsl_puppet::params::manage_r10k,
