@@ -57,9 +57,9 @@ class bsl_puppet::params {
   $puppetserver_home = '/opt/puppetlabs/server/data/puppetserver'
 
   $manage_hiera = 'true'
-  $manage_puppetdb = 'true'
-  $manage_postgresql = 'true'
-  $manage_hostname = 'true'
+  $manage_puppetdb = 'false'
+  $manage_postgresql = 'false'
+  $manage_hostname = 'false'
   $manage_puppetboard = 'false'
   $manage_r10k = 'true'
   $manage_r10k_webhooks = 'false'
